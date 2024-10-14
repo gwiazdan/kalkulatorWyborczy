@@ -1,35 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import {useEffect, useState} from 'react'
 import './App.css'
+import './css/municipalities.css'
+import {fetchData} from './api/api.ts';
+import Map from "./components/Map.tsx";
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [data, setData] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    useEffect(() => {
+        const getData = async () => {
+            setLoading(true);
+            const result = await fetchData();
+            if (result) {
+                setData(result);
+            } else {
+                setError('Nie udało się pobrać danych');
+            }
+            setLoading(false);
+        };
+
+        getData();
+    }, []);
+
+    if (loading) return <div>Ładowanie...</div>;
+    if (error) return <div>Błąd: {error}</div>;
+
+    return (
+        <>
+            <div className="grid grid-cols-2 h-full">
+                <div className="flex flex-col h-full">
+                    <h1 className="underline">123</h1>
+                </div>
+                <div className="flex flex-col map justify-center p-2">
+                    <Map municipalitiesResults={data}/>
+                </div>
+            </div>
+        </>
+    )
 }
 
 export default App

@@ -1,0 +1,3 @@
+[submodule "electionresultsapi"]
+	path = electionresultsapi
+	url = https://github.com/norbigigakoks/electionresultsapi

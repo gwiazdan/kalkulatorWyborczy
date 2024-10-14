@@ -1,0 +1,43 @@
+:root {
+    --pis: #31469b;
+    --ko: #fca43f;
+    --lewica: #d44;
+    --td: #8bd32e;
+    --konfederacja: #655;
+    --mn: #aaa
+}
+.gmina
+{
+    stroke-width: 0.5px;
+    stroke: #242424;
+    stroke: #242424;
+}
+.pis {
+    fill: var(--pis);
+}
+
+.ko {
+    fill: var(--ko);
+}
+
+.lew {
+    fill: var(--lewica);
+}
+
+.td {
+    fill: var(--td);
+}
+
+.konf {
+    fill: var(--konfederacja);
+}
+
+.bright30 {
+    -webkit-filter: brightness(125%);
+    filter: brightness(125%);
+}
+
+.bright50 {
+    -webkit-filter: brightness(75%);
+    filter: brightness(75%);
+}
