@@ -37,7 +37,6 @@
     transition: all 0.25s ease-out;
     filter: drop-shadow(15px 15px 15px #000000);
 }
-
 .wojewodztwo.bright30:hover {
     -webkit-filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
     filter: brightness(125%) drop-shadow(15px 15px 15px #000000);

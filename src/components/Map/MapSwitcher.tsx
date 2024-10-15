@@ -17,11 +17,11 @@ interface MunicipalitiesMapProps {
 const MapSwitcher: React.FC<MunicipalitiesMapProps> = ({data, currentState}) => {
 
     switch (currentState) {
-        case 'option1':
+        case 'gminy':
             return (<><MunicipalitiesMap municipalitiesResults={data.municipalitiesResults}/></>)
-        case 'option2':
+        case 'powiaty':
             return (<><CountiesMap countiesResults={data.countiesResults}/></>);
-        case 'option3':
+        case 'wojewodztwa':
             return (<><VoivodeshipsMap voivodeshipsResults={data.voivodeshipsResults}/></>);
         default:
             return (<p>:|</p>);

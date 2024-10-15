@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react'
 import './App.css'
 import {fetchData} from './api/api.ts';
 import Map from "./components/Map/Map.tsx";
+import Loader from "./components/Map/Loader.tsx";
 
 
 type ElectionResultsProps = {
@@ -44,7 +45,7 @@ function App() {
 
     }, []);
 
-    if (loading) return <div>Ładowanie...</div>;
+    if (loading) return <Loader/>;
     if (error) return <div>Błąd: {error}</div>;
 
     return (

@@ -19,7 +19,7 @@ interface VoivodeshipMapProps {
     voivodeshipsResults: PartyResults[];
 }
 
-const CountiesMap: React.FC<VoivodeshipMapProps> = ({voivodeshipsResults}) => {
+const VoivodeshipsMap: React.FC<VoivodeshipMapProps> = ({voivodeshipsResults}) => {
     const [activeVoivodeship, setActiveVoivodeship] = useState(null);
     const svgRef = useRef<SVGSVGElement>(null);
 
@@ -186,4 +186,4 @@ const CountiesMap: React.FC<VoivodeshipMapProps> = ({voivodeshipsResults}) => {
         </>
     )
 };
-export default CountiesMap;
+export default VoivodeshipsMap;
