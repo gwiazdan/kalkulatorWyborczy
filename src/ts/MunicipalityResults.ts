@@ -1,14 +1,14 @@
-interface PartyResults  {
-    municipalityID:number;
-    name:string;
-    numberOfVotes:number;
-    votesForBS:number;
-    votesForKO:number;
-    votesForKONF:number;
-    votesForLEW:number;
-    votesForPIS:number;
-    votesForTD:number;
-    votesForMN:number;
+interface MunicipalityResults {
+    municipalityID: number;
+    name: string;
+    numberOfVotes: number;
+    votesForBS: number;
+    votesForKO: number;
+    votesForKONF: number;
+    votesForLEW: number;
+    votesForPIS: number;
+    votesForTD: number;
+    votesForMN: number;
 }
 
 interface EvaluationResult {
@@ -27,20 +27,20 @@ interface EvaluationResult {
 }
 
 
-export default function evaluatePartyResults(results:PartyResults):EvaluationResult{
+export default function evaluateMunicipalityResults(results: MunicipalityResults): EvaluationResult {
 
-    let topParty:string = '';
+    let topParty: string = '';
 
-    const totalVotes:number = results.numberOfVotes;
+    const totalVotes: number = results.numberOfVotes;
 
     const percentResults = {
-        BS:(results.votesForBS/totalVotes) * 100,
-        KO:(results.votesForKO/totalVotes) * 100,
-        KONF:(results.votesForKONF/totalVotes) * 100,
-        LEW:(results.votesForLEW/totalVotes) * 100,
-        PIS:(results.votesForPIS/totalVotes) * 100,
-        TD:(results.votesForTD/totalVotes) * 100,
-        MN:(results.votesForMN/totalVotes) * 100
+        BS: (results.votesForBS / totalVotes) * 100,
+        KO: (results.votesForKO / totalVotes) * 100,
+        KONF: (results.votesForKONF / totalVotes) * 100,
+        LEW: (results.votesForLEW / totalVotes) * 100,
+        PIS: (results.votesForPIS / totalVotes) * 100,
+        TD: (results.votesForTD / totalVotes) * 100,
+        MN: (results.votesForMN / totalVotes) * 100
     };
 
     let maxVotes = Math.max(

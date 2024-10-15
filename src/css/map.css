@@ -8,7 +8,7 @@
 }
 .gmina
 {
-    stroke-width: 0.5px;
+    stroke-width: 0.5;
     stroke: #242424;
 }
 .gmina:hover
@@ -26,7 +26,28 @@
     -webkit-filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
     filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
 }
-.selectedMunicipality
+
+.powiat {
+
+}
+
+.powiat:hover {
+    cursor: pointer;
+    transition: all 0.25s ease-out;
+    filter: drop-shadow(15px 15px 15px #000000);
+}
+
+.powiat.bright30:hover {
+    -webkit-filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
+    filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
+}
+
+.powiat.bright50:hover {
+    -webkit-filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
+    filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
+}
+
+.selected
 {
     stroke: white;
     stroke-width: 2;

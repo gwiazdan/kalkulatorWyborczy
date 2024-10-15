@@ -1,11 +1,17 @@
 import {useEffect, useState} from 'react'
 import './App.css'
-import './css/municipalities.css'
 import {fetchData} from './api/api.ts';
-import Map from "./components/Map.tsx";
+import Map from "./components/Map/Map.tsx";
+
+
+type ElectionResultsProps = {
+    municipalitiesResults: any[];
+    countiesResults: any[];
+};
+
 
 function App() {
-    const [data, setData] = useState<any[]>([]);
+    const [data, setData] = useState<ElectionResultsProps | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -20,7 +26,7 @@ function App() {
                 return;
             }
             try {
-                const result = await fetchData();
+                const result: ElectionResultsProps | null = await fetchData();
                 if (result) {
                     setData(result);
                     sessionStorage.setItem('fetchedData', JSON.stringify(result));
@@ -29,10 +35,11 @@ function App() {
                 }
             }  catch (error) {
                 setError("Błąd pobierania danych!");
+            } finally {
+                setLoading(false);
             }
-            setLoading(false);
-        }
-        getData();
+        };
+        getData().catch(err => console.error(err));
 
     }, []);
 
@@ -46,7 +53,7 @@ function App() {
                     <h1 className="underline">123</h1>
                 </div>
                 <div className="flex flex-col map justify-center p-2">
-                    <Map municipalitiesResults={data}/>
+                    <Map data={data}/>
                 </div>
             </div>
         </>
