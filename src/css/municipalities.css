@@ -10,7 +10,26 @@
 {
     stroke-width: 0.5px;
     stroke: #242424;
-    stroke: #242424;
+}
+.gmina:hover
+{
+    cursor: pointer;
+    transition: all 0.25s ease-out;
+    filter: drop-shadow(15px 15px 15px #000000);
+}
+.gmina.bright30:hover {
+    -webkit-filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
+    filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
+}
+
+.gmina.bright50:hover {
+    -webkit-filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
+    filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
+}
+.selectedMunicipality
+{
+    stroke: white;
+    stroke-width: 2;
 }
 .pis {
     fill: var(--pis);

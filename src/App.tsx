@@ -12,16 +12,28 @@ function App() {
     useEffect(() => {
         const getData = async () => {
             setLoading(true);
-            const result = await fetchData();
-            if (result) {
-                setData(result);
-            } else {
-                setError('Nie udało się pobrać danych');
+
+            const cachedData = sessionStorage.getItem('fetchedData');
+            if (cachedData) {
+                setData(JSON.parse(cachedData));
+                setLoading(false);
+                return;
+            }
+            try {
+                const result = await fetchData();
+                if (result) {
+                    setData(result);
+                    sessionStorage.setItem('fetchedData', JSON.stringify(result));
+                } else {
+                    setError('Nie udało się pobrać danych');
+                }
+            }  catch (error) {
+                setError("Błąd pobierania danych!");
             }
             setLoading(false);
-        };
-
+        }
         getData();
+
     }, []);
 
     if (loading) return <div>Ładowanie...</div>;
