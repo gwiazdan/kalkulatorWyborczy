@@ -5,7 +5,7 @@ import evaluateCountyResults from "../../ts/CountyResults.ts";
 interface PartyResults {
     countyID: number;
     name: string;
-    votes: number;
+    numberOfVotes: number;
     votesForBS: number;
     votesForKO: number;
     votesForKONF: number;

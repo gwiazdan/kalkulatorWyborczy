@@ -1,14 +1,14 @@
-interface CountyResults {
-    countyID: number;
-    name:string;
+interface PartyResults {
+    voivodeshipID: number;
+    name: string;
     numberOfVotes: number;
-    votesForBS:number;
-    votesForKO:number;
-    votesForKONF:number;
-    votesForLEW:number;
-    votesForPIS:number;
-    votesForTD:number;
-    votesForMN:number;
+    votesForBS: number;
+    votesForKO: number;
+    votesForKONF: number;
+    votesForLEW: number;
+    votesForPIS: number;
+    votesForTD: number;
+    votesForMN: number;
 }
 
 interface PercentResults {
@@ -29,7 +29,7 @@ interface EvaluationResult {
 }
 
 
-export default function evaluateCountyResults(results: CountyResults): EvaluationResult {
+export default function evaluateVoivodeshipResults(results: PartyResults): EvaluationResult {
     const totalVotes: number = results.numberOfVotes;
 
     const partyVotes = {

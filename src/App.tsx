@@ -7,6 +7,7 @@ import Map from "./components/Map/Map.tsx";
 type ElectionResultsProps = {
     municipalitiesResults: any[];
     countiesResults: any[];
+    voivodeshipsResults: any[];
 };
 
 

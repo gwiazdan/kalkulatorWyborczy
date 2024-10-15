@@ -6,6 +6,7 @@ import '../../css/map.css'
 type ElectionResultsProps = {
     municipalitiesResults: any[];
     countiesResults: any[];
+    voivodeshipsResults: any[];
 };
 
 interface MapProps {

@@ -27,10 +27,30 @@
     filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
 }
 
-.powiat {
-
+.wojewodztwo {
+    stroke-width: 2;
+    stroke: #000;
 }
 
+.wojewodztwo:hover {
+    cursor: pointer;
+    transition: all 0.25s ease-out;
+    filter: drop-shadow(15px 15px 15px #000000);
+}
+
+.wojewodztwo.bright30:hover {
+    -webkit-filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
+    filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
+}
+
+.wojewodztwo.bright50:hover {
+    -webkit-filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
+    filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
+}
+.powiat {
+    stroke-width: 1.5;
+    stroke: #000;
+}
 .powiat:hover {
     cursor: pointer;
     transition: all 0.25s ease-out;
