@@ -1,8 +1,7 @@
-import {useEffect, useState} from 'react'
+import {useContext} from 'react'
 import './App.css'
-import {fetchData} from './api/api.ts';
 import Map from "./components/Map/Map.tsx";
-import Loader from "./components/Map/Loader.tsx";
+import {ApiContext} from "./components/Contexts/ApiProvider.tsx";
 
 
 type ElectionResultsProps = {
@@ -13,40 +12,10 @@ type ElectionResultsProps = {
 
 
 function App() {
-    const [data, setData] = useState<ElectionResultsProps | undefined>(undefined);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const {isApiAvailable} = useContext(ApiContext);
 
-    useEffect(() => {
-        const getData = async () => {
-            setLoading(true);
 
-            const cachedData = sessionStorage.getItem('fetchedData');
-            if (cachedData) {
-                setData(JSON.parse(cachedData));
-                setLoading(false);
-                return;
-            }
-            try {
-                const result: ElectionResultsProps | null = await fetchData();
-                if (result) {
-                    setData(result);
-                    sessionStorage.setItem('fetchedData', JSON.stringify(result));
-                } else {
-                    setError('Nie udało się pobrać danych');
-                }
-            }  catch (error) {
-                setError("Błąd pobierania danych!");
-            } finally {
-                setLoading(false);
-            }
-        };
-        getData().catch(err => console.error(err));
-
-    }, []);
-
-    if (loading) return <Loader/>;
-    if (error) return <div>Błąd: {error}</div>;
+    if (!isApiAvailable) return <div>Błąd: nie można połączyć się z Api</div>;
 
     return (
         <>
@@ -55,7 +24,7 @@ function App() {
                     <h1 className="underline">123</h1>
                 </div>
                 <div className="flex flex-col map justify-center p-2">
-                    <Map data={data}/>
+                    <Map/>
                 </div>
             </div>
         </>

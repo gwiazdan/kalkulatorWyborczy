@@ -1,41 +1,26 @@
-import React, {useEffect, useRef, useState} from "react";
-import evaluateMunicipalityResults from '../../ts/MunicipalityResults.ts';
+import React, {useContext, useEffect, useRef, useState} from "react";
 import svgPanZoom from "svg-pan-zoom";
+import evaluatePartyResults from "../../ts/PartyResults.ts";
+import {MunicipalitiesContext} from "./Contexts/MunicipalitiesContext.tsx";
 
 
-interface PartyResults {
-    municipalityID:number;
-    name:string;
-    numberOfVotes:number;
-    votesForBS:number;
-    votesForKO:number;
-    votesForKONF:number;
-    votesForLEW:number;
-    votesForPIS:number;
-    votesForTD:number;
-    votesForMN:number;
-}
-
-interface MunicipalitiesMapProps {
-    municipalitiesResults: PartyResults[];
-}
-
-const MunicipalitiesMap: React.FC<MunicipalitiesMapProps> = ({ municipalitiesResults }) => {
+const MunicipalitiesMap: React.FC = () => {
+    const {data: municipalitiesResults, setData: setMunicipalityResults} = useContext(MunicipalitiesContext);
     const [activeMunicipality, setActiveMunicipality] = useState(null);
     const svgRef = useRef<SVGSVGElement>(null);
 
     useEffect(()=>{
-        if(svgRef.current){
+        if (svgRef.current && municipalitiesResults) {
             const paths = svgRef.current.querySelectorAll('.gmina');
             paths.forEach(path => {
                 removeClasses(path);
                 const id = path.getAttribute('id');
-                const municipalityResult = municipalitiesResults.find(result => result.municipalityID.toString() === id);
+                const municipalityResult = municipalitiesResults.find(result => result.id.toString() === id);
                 if (id === activeMunicipality) {
                     path.classList.add('selected');
                 }
                 if (municipalityResult) {
-                    const evaluation = evaluateMunicipalityResults(municipalityResult);
+                    const evaluation = evaluatePartyResults(municipalityResult);
                     switch (evaluation.topParty) {
                         case 'PIS':
                             path.classList.add('pis');

@@ -1,40 +1,25 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import svgPanZoom from "svg-pan-zoom";
-import evaluateVoivodeshipResults from "../../ts/VoivodeshipResults.ts";
+import evaluatePartyResults from "../../ts/PartyResults.ts";
+import {VoivodeshipsContext} from "./Contexts/VoivodeshipsContext.tsx";
 
-interface PartyResults {
-    voivodeshipID: number;
-    name: string;
-    numberOfVotes: number;
-    votesForBS: number;
-    votesForKO: number;
-    votesForKONF: number;
-    votesForLEW: number;
-    votesForPIS: number;
-    votesForTD: number;
-    votesForMN: number;
-}
-
-interface VoivodeshipMapProps {
-    voivodeshipsResults: PartyResults[];
-}
-
-const VoivodeshipsMap: React.FC<VoivodeshipMapProps> = ({voivodeshipsResults}) => {
+const VoivodeshipsMap: React.FC = () => {
+    const {data: voivodeshipsResults, setData: setVoivodeshipsResults} = useContext(VoivodeshipsContext);
     const [activeVoivodeship, setActiveVoivodeship] = useState(null);
     const svgRef = useRef<SVGSVGElement>(null);
 
     useEffect(() => {
-        if (svgRef.current) {
+        if (svgRef.current && voivodeshipsResults) {
             const paths = svgRef.current.querySelectorAll('.wojewodztwo');
             paths.forEach(path => {
                 removeClasses(path);
                 const id = path.getAttribute('id');
-                const voivodeshipResults = voivodeshipsResults.find(result => result.voivodeshipID.toString() === id);
+                const voivodeshipResults = voivodeshipsResults.find(result => result.id.toString() === id);
                 if (id === activeVoivodeship) {
                     path.classList.add('selected');
                 }
                 if (voivodeshipResults) {
-                    const evaluation = evaluateVoivodeshipResults(voivodeshipResults);
+                    const evaluation = evaluatePartyResults(voivodeshipResults);
                     switch (evaluation.topParty) {
                         case 'PIS':
                             path.classList.add('pis');

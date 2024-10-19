@@ -1,40 +1,26 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import svgPanZoom from "svg-pan-zoom";
-import evaluateCountyResults from "../../ts/CountyResults.ts";
+import evaluatePartyResults from "../../ts/PartyResults.ts";
+import {CountiesContext} from "./Contexts/CountiesContext.tsx";
 
-interface PartyResults {
-    countyID: number;
-    name: string;
-    numberOfVotes: number;
-    votesForBS: number;
-    votesForKO: number;
-    votesForKONF: number;
-    votesForLEW: number;
-    votesForPIS: number;
-    votesForTD: number;
-    votesForMN: number;
-}
-
-interface CountiesMapProps {
-    countiesResults: PartyResults[];
-}
-
-const CountiesMap: React.FC<CountiesMapProps> = ({countiesResults}) => {
+const CountiesMap: React.FC = () => {
+    const {data: countiesResults, setData: setCountiesResults} = useContext(CountiesContext);
     const [activeCounty, setActiveCounty] = useState(null);
     const svgRef = useRef<SVGSVGElement>(null);
 
     useEffect(() => {
-        if (svgRef.current) {
+        if (svgRef.current && countiesResults) {
             const paths = svgRef.current.querySelectorAll('.powiat');
             paths.forEach(path => {
                 removeClasses(path);
                 const id = path.getAttribute('id');
-                const countyResults = countiesResults.find(result => result.countyID.toString() === id);
+                console.log(countiesResults);
+                const countyResults = countiesResults.find(result => result.id.toString() === id);
                 if (id === activeCounty) {
                     path.classList.add('selected');
                 }
                 if (countyResults) {
-                    const evaluation = evaluateCountyResults(countyResults);
+                    const evaluation = evaluatePartyResults(countyResults);
                     switch (evaluation.topParty) {
                         case 'PIS':
                             path.classList.add('pis');

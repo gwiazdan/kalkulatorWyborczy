@@ -2,27 +2,41 @@ import MunicipalitiesMap from "./MunicipalitiesMap.tsx";
 import CountiesMap from "./CountiesMap.tsx";
 import React from "react";
 import VoivodeshipsMap from "./VoivodeshipsMap.tsx";
+import {MunicipalitiesProvider} from "./Contexts/MunicipalitiesContext.tsx";
+import {CountiesProvider} from "./Contexts/CountiesContext.tsx";
+import {VoivodeshipsProvider} from "./Contexts/VoivodeshipsContext.tsx";
 
-type ElectionResultsProps = {
-    municipalitiesResults: any[];
-    countiesResults: any[];
-    voivodeshipsResults: any[];
-};
-
-interface MunicipalitiesMapProps {
-    data: ElectionResultsProps;
+interface MapSwitcherProps {
     currentState: string;
 }
 
-const MapSwitcher: React.FC<MunicipalitiesMapProps> = ({data, currentState}) => {
+const MapSwitcher: React.FC<MapSwitcherProps> = ({currentState}) => {
 
     switch (currentState) {
         case 'gminy':
-            return (<><MunicipalitiesMap municipalitiesResults={data.municipalitiesResults}/></>)
+            return (
+                <>
+                    <MunicipalitiesProvider>
+                        <MunicipalitiesMap/>
+                    </MunicipalitiesProvider>
+                </>
+            )
         case 'powiaty':
-            return (<><CountiesMap countiesResults={data.countiesResults}/></>);
+            return (
+                <>
+                    <CountiesProvider>
+                        <CountiesMap/>
+                    </CountiesProvider>
+                </>
+            );
         case 'wojewodztwa':
-            return (<><VoivodeshipsMap voivodeshipsResults={data.voivodeshipsResults}/></>);
+            return (
+                <>
+                    <VoivodeshipsProvider>
+                        <VoivodeshipsMap/>
+                    </VoivodeshipsProvider>
+                </>
+            );
         default:
             return (<p>:|</p>);
     }

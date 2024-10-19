@@ -1,15 +1,4 @@
-interface MunicipalityResults {
-    municipalityID: number;
-    name: string;
-    numberOfVotes: number;
-    votesForBS: number;
-    votesForKO: number;
-    votesForKONF: number;
-    votesForLEW: number;
-    votesForPIS: number;
-    votesForTD: number;
-    votesForMN: number;
-}
+import PartyResults from "../interfaces/PartyResults.ts";
 
 interface EvaluationResult {
     topParty: string;
@@ -27,7 +16,7 @@ interface EvaluationResult {
 }
 
 
-export default function evaluateMunicipalityResults(results: MunicipalityResults): EvaluationResult {
+export default function evaluatePartyResults(results: PartyResults): EvaluationResult {
 
     let topParty: string = '';
 
