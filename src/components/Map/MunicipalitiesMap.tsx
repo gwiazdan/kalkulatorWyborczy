@@ -6,11 +6,13 @@ import {MunicipalitiesContext} from "./Contexts/MunicipalitiesContext.tsx";
 
 const MunicipalitiesMap: React.FC = () => {
     const municipalitiesResults = useContext(MunicipalitiesContext);
-    const [activeMunicipality, setActiveMunicipality] = useState(null);
+    const [activeMunicipality, setActiveMunicipality] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
     const svgRef = useRef<SVGSVGElement>(null);
 
     useEffect(()=>{
         if (svgRef.current && municipalitiesResults) {
+            setLoading(true);
             const paths = svgRef.current.querySelectorAll('.gmina');
             paths.forEach(path => {
                 removeClasses(path);
@@ -55,6 +57,7 @@ const MunicipalitiesMap: React.FC = () => {
                 } else {
                     console.warn(`Brak wyników dla gminy o ID ${id}`);
                 }
+                setLoading(false);
             })
         }
     }, [municipalitiesResults, activeMunicipality]);
@@ -89,14 +92,14 @@ const MunicipalitiesMap: React.FC = () => {
         }
     }, []);
 
-    const handleClick = (event: any) => {
+    const handleClick = (event: React.MouseEvent<SVGElement>) => {
         const selectedConstituency = event.currentTarget.id;
         setActiveMunicipality(selectedConstituency);
     };
     return(
         <>
             <svg ref={svgRef} version="1.1" id="svg10166" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1800"
-                 height="1500" width="1350" className="w-full h-full">
+                 height="1500" width="1350" className="w-full h-full" style={{ visibility: loading ? "hidden" : "visible" }}>
                 <g id="g116855">
                     <path
                         id="path2"

@@ -5,9 +5,9 @@ import './index.css'
 import {ApiProvider} from "./components/Contexts/ApiProvider.tsx";
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-      <ApiProvider>
-          <App/>
-      </ApiProvider>
-  </StrictMode>,
+    <StrictMode>
+        <ApiProvider>
+            <App/>
+        </ApiProvider>
+    </StrictMode>,
 )

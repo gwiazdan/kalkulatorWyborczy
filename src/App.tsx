@@ -4,7 +4,7 @@ import Map from "./components/Map/Map.tsx";
 import {ApiContext} from "./components/Contexts/ApiProvider.tsx";
 
 function App() {
-    const {isApiAvailable} = useContext(ApiContext);
+    const isApiAvailable:boolean = useContext(ApiContext);
 
 
     if (!isApiAvailable) return <div>Błąd: nie można połączyć się z Api</div>;
