@@ -3,7 +3,11 @@ import svgPanZoom from "svg-pan-zoom";
 import evaluatePartyResults from "../../ts/PartyResults.ts";
 import {CountiesContext} from "./Contexts/CountiesContext.tsx";
 
-const CountiesMap: React.FC = () => {
+interface CountiesMapProps{
+    popularityState: number;
+}
+
+const CountiesMap: React.FC<CountiesMapProps> = ({popularityState}) => {
     const countiesResults = useContext(CountiesContext);
     const [activeCounty, setActiveCounty] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -22,7 +26,7 @@ const CountiesMap: React.FC = () => {
                     path.classList.add('selected');
                 }
                 if (countyResults) {
-                    const evaluation = evaluatePartyResults(countyResults);
+                    const evaluation = evaluatePartyResults({results: countyResults, state: 0});
                     switch (evaluation.topParty) {
                         case 'PIS':
                             path.classList.add('pis');

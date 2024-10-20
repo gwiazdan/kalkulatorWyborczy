@@ -3,8 +3,11 @@ import svgPanZoom from "svg-pan-zoom";
 import evaluatePartyResults from "../../ts/PartyResults.ts";
 import {MunicipalitiesContext} from "./Contexts/MunicipalitiesContext.tsx";
 
+interface MunicipalitiesMapProps {
+    popularityState: number;
+}
 
-const MunicipalitiesMap: React.FC = () => {
+const MunicipalitiesMap: React.FC<MunicipalitiesMapProps> = ({popularityState}) => {
     const municipalitiesResults = useContext(MunicipalitiesContext);
     const [activeMunicipality, setActiveMunicipality] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -22,7 +25,7 @@ const MunicipalitiesMap: React.FC = () => {
                     path.classList.add('selected');
                 }
                 if (municipalityResult) {
-                    const evaluation = evaluatePartyResults(municipalityResult);
+                    const evaluation = evaluatePartyResults({results: municipalityResult, state: popularityState});
                     switch (evaluation.topParty) {
                         case 'PIS':
                             path.classList.add('pis');
@@ -60,7 +63,7 @@ const MunicipalitiesMap: React.FC = () => {
                 setLoading(false);
             })
         }
-    }, [municipalitiesResults, activeMunicipality]);
+    }, [municipalitiesResults, activeMunicipality, popularityState]);
     const removeClasses = (path:Element) => {
         path.classList.remove('bright50');
         path.classList.remove('bright30');
@@ -71,7 +74,8 @@ const MunicipalitiesMap: React.FC = () => {
         path.classList.remove('konfederacja');
         path.classList.remove('bs');
         path.classList.remove('selected');
-
+        path.classList.remove('rwp');
+        path.classList.remove('sp');
     }
     useEffect(() => {
         if (svgRef.current) {

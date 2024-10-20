@@ -3,7 +3,11 @@ import svgPanZoom from "svg-pan-zoom";
 import evaluatePartyResults from "../../ts/PartyResults.ts";
 import {VoivodeshipsContext} from "./Contexts/VoivodeshipsContext.tsx";
 
-const VoivodeshipsMap: React.FC = () => {
+interface VoivodeshipsMapProps{
+    popularityState: number;
+}
+
+const VoivodeshipsMap: React.FC<VoivodeshipsMapProps> = ({popularityState}) => {
     const voivodeshipsResults = useContext(VoivodeshipsContext);
     const [activeVoivodeship, setActiveVoivodeship] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -21,7 +25,7 @@ const VoivodeshipsMap: React.FC = () => {
                     path.classList.add('selected');
                 }
                 if (voivodeshipResults) {
-                    const evaluation = evaluatePartyResults(voivodeshipResults);
+                    const evaluation = evaluatePartyResults({results: voivodeshipResults, state: 0});
                     switch (evaluation.topParty) {
                         case 'PIS':
                             path.classList.add('pis');
@@ -46,9 +50,6 @@ const VoivodeshipsMap: React.FC = () => {
                             break;
                         default:
                     }
-                    console.log(evaluation.topParty);
-                    console.log(evaluation.isAbove40);
-                    console.log(evaluation.percentResults.PIS)
                     if (evaluation.isAbove40) {
                         if (evaluation.isAbove50) {
                             path.classList.add('bright50');

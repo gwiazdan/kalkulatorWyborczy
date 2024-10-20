@@ -22,12 +22,8 @@ export const ApiProvider: React.FC<ApiProviderProps> = ({children}) => {
             }
         };
 
-        checkApiAvailability().then(()=> {
-            if (!isApiAvailable) {
-                console.error("Błąd! Nie można połączyć się z Api")
-            }
-        });
-    }, []);
+        checkApiAvailability();
+    }, [isApiAvailable]);
 
     return (
         <ApiContext.Provider value={isApiAvailable}>

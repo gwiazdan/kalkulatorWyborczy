@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from "react";
 
-interface MapSwitchProps {
+interface TemporarySwitchProps {
     onChange: (state: string) => void;
 }
 
-const MapSwitch: React.FC<MapSwitchProps> = ({onChange}) => {
+const TemporarySwitch: React.FC<TemporarySwitchProps> = ({onChange}) => {
     const [state, setState] = useState<string>(() => {
-        const savedState = localStorage.getItem('mapSwitchState');
-        return savedState ? savedState : 'okręgi';
+        const savedState = localStorage.getItem('senateCurrentState');
+        return savedState ? savedState : 'tylko Pakt Senacki';
     });
 
     useEffect(() => {
-        localStorage.setItem('mapSwitchState', state);
+        localStorage.setItem('senateCurrentState', state);
         onChange(state);
     }, [state]);
 
@@ -21,7 +21,7 @@ const MapSwitch: React.FC<MapSwitchProps> = ({onChange}) => {
     return (
         <>
             <div className="flex flex-auto justify-evenly border rounded-md w-1/2">
-                {['gminy', 'powiaty', 'województwa', 'okręgi'].map((option) => (
+                {['bez paktów', 'tylko Pakt Senacki', 'tylko Pakt Prawicy', 'oba pakty'].map((option) => (
                     <button
                         key={option}
                         className={`border-none px-2 py-1 rounded-md w-full ${state === option ? 'bg-cyan-900 text-white' : ''}`}
@@ -40,4 +40,4 @@ const MapSwitch: React.FC<MapSwitchProps> = ({onChange}) => {
         </>
     );
 };
-export default MapSwitch;
+export default TemporarySwitch;

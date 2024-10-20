@@ -1,22 +1,23 @@
-import PartyResults from "../interfaces/PartyResults.ts";
+import SenateResults from "../interfaces/SenateResults.ts";
 
 interface EvaluationResult {
     topParty: string;
-    isAbove40: boolean;
-    isAbove50: boolean;
+    isTossup: boolean;
+    isLeaning: boolean;
+    isLikely: boolean;
 }
-interface PartyResultsProps {
-    results: PartyResults;
+
+interface SenateResultsProps {
+    results: SenateResults;
     state: number;
 }
 
-export default function evaluatePartyResults({results, state}:PartyResultsProps): EvaluationResult {
 
+export default function evaluateSenateResults({results, state}:SenateResultsProps): EvaluationResult {
     let topParty: string = '';
-
+    let maxVotes;
     const totalVotes: number = results.numberOfVotes;
-
-    let maxVotes: number;
+    let secondLargestResult : number;
 
     switch(state) {
         case 0: {
@@ -29,7 +30,9 @@ export default function evaluatePartyResults({results, state}:PartyResultsProps)
                 results.votesForTD
             ]
             const sortedVotes = votes.sort((a,b)=>b-a);
+            console.log(sortedVotes);
             maxVotes = sortedVotes[0];
+            secondLargestResult = sortedVotes[1];
             break;
         }
         case 1: {
@@ -37,20 +40,35 @@ export default function evaluatePartyResults({results, state}:PartyResultsProps)
                 results.votesForBS,
                 results.votesForKONF,
                 results.votesForPIS,
-                //results.votesForSenatePact
+                results.votesForSenatePact
             ]
             const sortedVotes = votes.sort((a,b)=>b-a);
             maxVotes = sortedVotes[0];
+            secondLargestResult = sortedVotes[1];
             break;
         }
+        case 2: {
+            const votes = [
+                results.votesForBS,
+                results.votesForKO,
+                results.votesForLEW,
+                results.votesForRightWingPact,
+                results.votesForTD
+            ]
+            const sortedVotes = votes.sort((a,b)=>b-a);
+            maxVotes = sortedVotes[0];
+            secondLargestResult = sortedVotes[1];
+            break;
+            }
         default: {
             const votes = [
                 results.votesForBS,
-                //results.votesForSenatePact,
-                //results.votesForRightWingPact
+                results.votesForSenatePact,
+                results.votesForRightWingPact
             ]
             const sortedVotes = votes.sort((a,b)=>b-a);
             maxVotes = sortedVotes[0];
+            secondLargestResult = sortedVotes[1];
             break;
         }
     }
@@ -73,23 +91,26 @@ export default function evaluatePartyResults({results, state}:PartyResultsProps)
         case results.votesForKONF:
             topParty='KONF';
             break;
-            /*
         case results.votesForSenatePact:
             topParty='SP';
             break;
         case results.votesForRightWingPact:
             topParty='RWP';
-            break;*/
+            break;
         default:
             topParty='MN';
             break;
     }
-    const isAbove40 = (maxVotes / totalVotes) * 100 > 40;
-    const isAbove50 = (maxVotes / totalVotes) * 100 > 50;
+
+
+    const isTossup = (maxVotes-secondLargestResult)/totalVotes * 100 < 2;
+    const isLeaning = (maxVotes-secondLargestResult)/totalVotes * 100 < 4;
+    const isLikely = (maxVotes-secondLargestResult)/totalVotes * 100 < 6;
 
     return {
         topParty,
-        isAbove40,
-        isAbove50,
+        isTossup,
+        isLeaning,
+        isLikely,
     };
 }

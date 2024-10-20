@@ -1,10 +1,13 @@
 :root {
-    --pis: #31469b;
-    --ko: #fca43f;
-    --lewica: #d44;
-    --td: #8bd32e;
-    --konfederacja: #655;
-    --mn: #aaa
+    --pis: #073A76;
+    --ko: #e19f39;
+    --lewica: #ac145a;
+    --td: #96d544;
+    --konfederacja: #102440;
+    --bs: #DA251D;
+    --mn: #0780C4;
+    --sp: #e19f39;
+    --rwp: #102440;
 }
 .gmina
 {
@@ -46,11 +49,13 @@
     -webkit-filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
     filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
 }
-.powiat {
+.powiat,
+.okregSenacki {
     stroke-width: 1.5;
     stroke: #000;
 }
-.powiat:hover {
+.powiat:hover,
+.okregSenacki:hover {
     cursor: pointer;
     transition: all 0.25s ease-out;
     filter: drop-shadow(15px 15px 15px #000000);
@@ -78,7 +83,12 @@
 .ko {
     fill: var(--ko);
 }
-
+.sp {
+    fill: var(--sp);
+}
+.rwp {
+    fill: var(--rwp);
+}
 .lew {
     fill: var(--lewica);
 }
@@ -99,4 +109,29 @@
 .bright50 {
     -webkit-filter: brightness(75%);
     filter: brightness(75%);
+}
+
+.tossup {
+    -webkit-filter: brightness(200%);
+    filter: brightness(200%);
+}
+.leaning {
+    -webkit-filter: brightness(150%);
+    filter: brightness(150%);
+}
+.likely {
+    -webkit-filter: brightness(125%);
+    filter: brightness(125%);
+}
+.okregSenacki.tossup:hover {
+    -webkit-filter: brightness(200%) drop-shadow(15px 15px 15px #000000);
+    filter: brightness(200%) drop-shadow(15px 15px 15px #000000);
+}
+.okregSenacki.leaning:hover {
+     -webkit-filter: brightness(150%) drop-shadow(15px 15px 15px #000000);
+     filter: brightness(150%) drop-shadow(15px 15px 15px #000000);
+ }
+.okregSenacki.likely:hover {
+    -webkit-filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
+    filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
 }
