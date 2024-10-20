@@ -5,7 +5,7 @@ import {MunicipalitiesContext} from "./Contexts/MunicipalitiesContext.tsx";
 
 
 const MunicipalitiesMap: React.FC = () => {
-    const {data: municipalitiesResults, setData: setMunicipalityResults} = useContext(MunicipalitiesContext);
+    const municipalitiesResults = useContext(MunicipalitiesContext);
     const [activeMunicipality, setActiveMunicipality] = useState(null);
     const svgRef = useRef<SVGSVGElement>(null);
 
@@ -93,7 +93,6 @@ const MunicipalitiesMap: React.FC = () => {
         const selectedConstituency = event.currentTarget.id;
         setActiveMunicipality(selectedConstituency);
     };
-
     return(
         <>
             <svg ref={svgRef} version="1.1" id="svg10166" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1800"

@@ -4,7 +4,7 @@ import evaluatePartyResults from "../../ts/PartyResults.ts";
 import {VoivodeshipsContext} from "./Contexts/VoivodeshipsContext.tsx";
 
 const VoivodeshipsMap: React.FC = () => {
-    const {data: voivodeshipsResults, setData: setVoivodeshipsResults} = useContext(VoivodeshipsContext);
+    const voivodeshipsResults = useContext(VoivodeshipsContext);
     const [activeVoivodeship, setActiveVoivodeship] = useState(null);
     const svgRef = useRef<SVGSVGElement>(null);
 

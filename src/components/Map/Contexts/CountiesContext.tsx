@@ -1,32 +1,22 @@
 import React, {createContext, ReactNode, useEffect, useState} from "react";
 import PartyResults from "../../../interfaces/PartyResults";
 
-interface CountiesContextProps {
-    data: PartyResults[] | null;
-    setData: React.Dispatch<React.SetStateAction<PartyResults[] | null>>;
-}
 
-const defaultContextValue: CountiesContextProps = {
-    data: null,
-    setData: () => {
-    }
-};
-
-export const CountiesContext = createContext<CountiesContextProps>(defaultContextValue);
+export const CountiesContext = createContext<PartyResults[] | null>(null);
 
 interface CountiesProviderProps {
     children: ReactNode;
 }
 
 export const CountiesProvider: React.FC<CountiesProviderProps> = ({children}) => {
-    const [data, setData] = useState<PartyResults[] | null>(null);
+    const [countiesResults, setCountiesResults] = useState<PartyResults[] | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch("http://localhost:8081/api/counties");
                 const result = await response.json();
-                setData(result);
+                setCountiesResults(result);
             } catch (error) {
                 console.error("Błąd podczas pobierania danych:", error);
             }
@@ -36,7 +26,7 @@ export const CountiesProvider: React.FC<CountiesProviderProps> = ({children}) =>
     }, []);
 
     return (
-        <CountiesContext.Provider value={{data, setData}}>
+        <CountiesContext.Provider value={countiesResults}>
             {children}
         </CountiesContext.Provider>
     );

@@ -4,7 +4,7 @@ import evaluatePartyResults from "../../ts/PartyResults.ts";
 import {CountiesContext} from "./Contexts/CountiesContext.tsx";
 
 const CountiesMap: React.FC = () => {
-    const {data: countiesResults, setData: setCountiesResults} = useContext(CountiesContext);
+    const countiesResults = useContext(CountiesContext);
     const [activeCounty, setActiveCounty] = useState(null);
     const svgRef = useRef<SVGSVGElement>(null);
 

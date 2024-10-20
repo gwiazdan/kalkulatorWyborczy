@@ -3,14 +3,6 @@ import './App.css'
 import Map from "./components/Map/Map.tsx";
 import {ApiContext} from "./components/Contexts/ApiProvider.tsx";
 
-
-type ElectionResultsProps = {
-    municipalitiesResults: any[];
-    countiesResults: any[];
-    voivodeshipsResults: any[];
-};
-
-
 function App() {
     const {isApiAvailable} = useContext(ApiContext);
 
