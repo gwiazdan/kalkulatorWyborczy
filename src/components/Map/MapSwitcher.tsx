@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
-import MunicipalitiesMap from "./MunicipalitiesMap.tsx";
-import CountiesMap from './CountiesMap.tsx';
-import VoivodeshipsMap from "./VoivodeshipsMap.tsx";
+import React from "react";
+import MunicipalitiesMap from "./AdministrativeMaps/MunicipalitiesMap.tsx";
+import CountiesMap from './AdministrativeMaps/CountiesMap.tsx';
+import VoivodeshipsMap from "./AdministrativeMaps/VoivodeshipsMap.tsx";
 import {MunicipalitiesProvider} from "./Contexts/MunicipalitiesContext.tsx";
 import {CountiesProvider} from "./Contexts/CountiesContext.tsx";
 import {VoivodeshipsProvider} from "./Contexts/VoivodeshipsContext.tsx";
@@ -11,33 +11,16 @@ import SenateMap from "./SenateMap.tsx";
 
 interface MapSwitcherProps {
     currentState: string;
-    senateState: string;
-    popularityState: string;
 }
 
-const MapSwitcher: React.FC<MapSwitcherProps> = ({currentState, senateState, popularityState}) => {
-    const [currentPopularityState, setCurrentPopularityState] = useState<number>(0);
-    useEffect(() => {
-        switch(popularityState){
-            case 'Poparcie partii':
-                setCurrentPopularityState(0);
-                break;
-            case 'Rząd vs PiS':
-                setCurrentPopularityState(1);
-                break;
-            case 'Rząd vs Opozycja':
-                setCurrentPopularityState(2);
-                break;
-            default:
-        }
-    }, [popularityState]);
+const MapSwitcher: React.FC<MapSwitcherProps> = ({currentState}) => {
 
     switch (currentState) {
         case 'gminy':
             return (
                 <>
                     <MunicipalitiesProvider>
-                        <MunicipalitiesMap popularityState={currentPopularityState}/>
+                        <MunicipalitiesMap/>
                     </MunicipalitiesProvider>
                 </>
             )
@@ -45,7 +28,7 @@ const MapSwitcher: React.FC<MapSwitcherProps> = ({currentState, senateState, pop
             return (
                 <>
                     <CountiesProvider>
-                        <CountiesMap popularityState={currentPopularityState}/>
+                        <CountiesMap/>
                     </CountiesProvider>
                 </>
             );
@@ -53,7 +36,7 @@ const MapSwitcher: React.FC<MapSwitcherProps> = ({currentState, senateState, pop
             return (
                 <>
                     <VoivodeshipsProvider>
-                        <VoivodeshipsMap popularityState={currentPopularityState}/>
+                        <VoivodeshipsMap/>
                     </VoivodeshipsProvider>
                 </>
             );
@@ -61,7 +44,7 @@ const MapSwitcher: React.FC<MapSwitcherProps> = ({currentState, senateState, pop
             return (
                 <>
                     <SenateProvider>
-                        <SenateMap senateState={senateState}/>
+                            <SenateMap/>
                     </SenateProvider>
                 </>
             );

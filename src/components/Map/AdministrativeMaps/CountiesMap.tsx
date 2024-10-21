@@ -1,13 +1,10 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import svgPanZoom from "svg-pan-zoom";
-import evaluatePartyResults from "../../ts/PartyResults.ts";
-import {CountiesContext} from "./Contexts/CountiesContext.tsx";
+import evaluatePartyResults from "../../../ts/PartyResults.ts";
+import {CountiesContext} from "../Contexts/CountiesContext.tsx";
 
-interface CountiesMapProps{
-    popularityState: number;
-}
 
-const CountiesMap: React.FC<CountiesMapProps> = ({popularityState}) => {
+const CountiesMap: React.FC = () => {
     const countiesResults = useContext(CountiesContext);
     const [activeCounty, setActiveCounty] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);

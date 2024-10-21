@@ -3,12 +3,8 @@ import React, {useEffect, useState} from "react";
 import MapSwitcher from "./MapSwitcher.tsx";
 import '../../css/map.css'
 
-interface MapProps{
-    senateState: string;
-    popularityState: string;
-}
 
-const Map: React.FC<MapProps> = ({senateState, popularityState}) => {
+const Map: React.FC = () => {
     const [currentState, setCurrentState] = useState<string>(() => {
         const savedState = localStorage.getItem('mapCurrentState');
         return savedState ? savedState : 'okręgi'; // Ustawienie domyślnej wartości
@@ -26,7 +22,7 @@ const Map: React.FC<MapProps> = ({senateState, popularityState}) => {
         <>
             <MapSwitch onChange={handleStateChange}/>
             <div className="flex h-full">
-                <MapSwitcher currentState={currentState} senateState={senateState} popularityState={popularityState}/>
+                <MapSwitcher currentState={currentState}/>
             </div>
         </>
     )

@@ -2,35 +2,15 @@ import React, {useContext, useEffect, useRef, useState} from "react";
 import svgPanZoom from "svg-pan-zoom";
 import {SenateContext} from "./Contexts/SenateContext.tsx";
 import evaluateSenateResults from "../../ts/SenateResults.ts";
+import {useSenateOption} from "../Contexts/SenateOptionsContext.tsx";
 
-interface SenateMapProps {
-    senateState: string;
-}
 
-const SenateMap: React.FC<SenateMapProps> = ({senateState}) => {
+const SenateMap: React.FC = () => {
     const senateResults = useContext(SenateContext);
+    const {selectedOption} = useSenateOption();
     const [activeVoivodeship, setActiveVoivodeship] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const svgRef = useRef<SVGSVGElement>(null);
-    const [currentSenateState, setCurrentSenateState] = useState<number>(1);
-
-    useEffect(() => {
-        switch(senateState){
-            case 'bez paktów':
-                setCurrentSenateState(0);
-                break;
-            case 'tylko Pakt Senacki':
-                setCurrentSenateState(1);
-                break;
-            case 'tylko Pakt Prawicy':
-                setCurrentSenateState(2);
-                break;
-            case 'oba pakty':
-                setCurrentSenateState(3);
-                break;
-            default:
-        }
-    }, [senateState]);
 
     useEffect(() => {
         if (svgRef.current && senateResults) {
@@ -44,7 +24,7 @@ const SenateMap: React.FC<SenateMapProps> = ({senateState}) => {
                     path.classList.add('selected');
                 }
                 if (constituencyResult) {
-                    const evaluation = evaluateSenateResults({results: constituencyResult, state: currentSenateState});
+                    const evaluation = evaluateSenateResults({results: constituencyResult, state: selectedOption});
                     switch (evaluation.topParty) {
                         case 'PIS':
                             path.classList.add('pis');
@@ -92,7 +72,8 @@ const SenateMap: React.FC<SenateMapProps> = ({senateState}) => {
                 setLoading(false);
             })
         }
-    }, [senateResults, activeVoivodeship, currentSenateState]);
+    }, [senateResults, activeVoivodeship, selectedOption]);
+
     const removeClasses = (path: Element) => {
         path.classList.remove('tossup');
         path.classList.remove('leaning');

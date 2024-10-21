@@ -1,13 +1,9 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import svgPanZoom from "svg-pan-zoom";
-import evaluatePartyResults from "../../ts/PartyResults.ts";
-import {VoivodeshipsContext} from "./Contexts/VoivodeshipsContext.tsx";
+import evaluatePartyResults from "../../../ts/PartyResults.ts";
+import {VoivodeshipsContext} from "../Contexts/VoivodeshipsContext.tsx";
 
-interface VoivodeshipsMapProps{
-    popularityState: number;
-}
-
-const VoivodeshipsMap: React.FC<VoivodeshipsMapProps> = ({popularityState}) => {
+const VoivodeshipsMap: React.FC = () => {
     const voivodeshipsResults = useContext(VoivodeshipsContext);
     const [activeVoivodeship, setActiveVoivodeship] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);

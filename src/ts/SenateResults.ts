@@ -1,4 +1,5 @@
 import SenateResults from "../interfaces/SenateResults.ts";
+import {SenateOption} from "../components/Contexts/SenateOptionsContext.tsx";
 
 interface EvaluationResult {
     topParty: string;
@@ -9,7 +10,7 @@ interface EvaluationResult {
 
 interface SenateResultsProps {
     results: SenateResults;
-    state: number;
+    state: SenateOption;
 }
 
 
@@ -20,7 +21,7 @@ export default function evaluateSenateResults({results, state}:SenateResultsProp
     let secondLargestResult : number;
 
     switch(state) {
-        case 0: {
+        case SenateOption.BezPaktow: {
             const votes = [
                 results.votesForBS,
                 results.votesForKO,
@@ -30,12 +31,11 @@ export default function evaluateSenateResults({results, state}:SenateResultsProp
                 results.votesForTD
             ]
             const sortedVotes = votes.sort((a,b)=>b-a);
-            console.log(sortedVotes);
             maxVotes = sortedVotes[0];
             secondLargestResult = sortedVotes[1];
             break;
         }
-        case 1: {
+        case SenateOption.TylkoPaktSenacki: {
             const votes = [
                 results.votesForBS,
                 results.votesForKONF,
@@ -47,7 +47,7 @@ export default function evaluateSenateResults({results, state}:SenateResultsProp
             secondLargestResult = sortedVotes[1];
             break;
         }
-        case 2: {
+        case SenateOption.TylkoPaktPrawicy: {
             const votes = [
                 results.votesForBS,
                 results.votesForKO,

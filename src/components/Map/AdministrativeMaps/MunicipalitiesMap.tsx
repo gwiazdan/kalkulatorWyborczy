@@ -1,13 +1,10 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import svgPanZoom from "svg-pan-zoom";
-import evaluatePartyResults from "../../ts/PartyResults.ts";
-import {MunicipalitiesContext} from "./Contexts/MunicipalitiesContext.tsx";
+import evaluatePartyResults from "../../../ts/PartyResults.ts";
+import {MunicipalitiesContext} from "../Contexts/MunicipalitiesContext.tsx";
 
-interface MunicipalitiesMapProps {
-    popularityState: number;
-}
 
-const MunicipalitiesMap: React.FC<MunicipalitiesMapProps> = ({popularityState}) => {
+const MunicipalitiesMap: React.FC = () => {
     const municipalitiesResults = useContext(MunicipalitiesContext);
     const [activeMunicipality, setActiveMunicipality] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -25,7 +22,7 @@ const MunicipalitiesMap: React.FC<MunicipalitiesMapProps> = ({popularityState}) 
                     path.classList.add('selected');
                 }
                 if (municipalityResult) {
-                    const evaluation = evaluatePartyResults({results: municipalityResult, state: popularityState});
+                    const evaluation = evaluatePartyResults({results: municipalityResult, state: 0});
                     switch (evaluation.topParty) {
                         case 'PIS':
                             path.classList.add('pis');
@@ -63,7 +60,7 @@ const MunicipalitiesMap: React.FC<MunicipalitiesMapProps> = ({popularityState}) 
                 setLoading(false);
             })
         }
-    }, [municipalitiesResults, activeMunicipality, popularityState]);
+    }, [municipalitiesResults, activeMunicipality]);
     const removeClasses = (path:Element) => {
         path.classList.remove('bright50');
         path.classList.remove('bright30');
