@@ -1,13 +1,18 @@
+import { MapOption } from "../components/Contexts/OptionsContext.tsx";
 import PartyResults from "../interfaces/PartyResults.ts";
 
 interface EvaluationResult {
     topParty: string;
-    isAbove40: boolean;
-    isAbove50: boolean;
+    isBelow10: boolean;
+    isBelow20: boolean;
+    isBelow30: boolean;
+    isBelow40: boolean;
+    isBelow50: boolean;
+    isBelow60: boolean;
 }
 interface PartyResultsProps {
     results: PartyResults;
-    state: number;
+    state: MapOption;
 }
 
 export default function evaluatePartyResults({results, state}:PartyResultsProps): EvaluationResult {
@@ -19,7 +24,7 @@ export default function evaluatePartyResults({results, state}:PartyResultsProps)
     let maxVotes: number;
 
     switch(state) {
-        case 0: {
+        case MapOption.PoparciePartii: {
             const votes = [
                 results.votesForBS,
                 results.votesForKO,
@@ -32,12 +37,10 @@ export default function evaluatePartyResults({results, state}:PartyResultsProps)
             maxVotes = sortedVotes[0];
             break;
         }
-        case 1: {
+        case MapOption.RzadVsOpozycja: {
             const votes = [
-                results.votesForBS,
-                results.votesForKONF,
-                results.votesForPIS,
-                //results.votesForSenatePact
+                results.votesForOpposition,
+                results.votesForGovernment
             ]
             const sortedVotes = votes.sort((a,b)=>b-a);
             maxVotes = sortedVotes[0];
@@ -73,23 +76,31 @@ export default function evaluatePartyResults({results, state}:PartyResultsProps)
         case results.votesForKONF:
             topParty='KONF';
             break;
-            /*
-        case results.votesForSenatePact:
+
+        case results.votesForGovernment:
             topParty='SP';
             break;
-        case results.votesForRightWingPact:
+        case results.votesForOpposition:
             topParty='RWP';
-            break;*/
+            break;
         default:
-            topParty='MN';
             break;
     }
-    const isAbove40 = (maxVotes / totalVotes) * 100 > 40;
-    const isAbove50 = (maxVotes / totalVotes) * 100 > 50;
+    const isBelow10 = (maxVotes / totalVotes) * 100 < 10;
+    const isBelow20 = (maxVotes / totalVotes) * 100 < 20;
+    const isBelow30 = (maxVotes / totalVotes) * 100 < 30;
+    const isBelow40 = (maxVotes / totalVotes) * 100 < 40;
+    const isBelow50 = (maxVotes / totalVotes) * 100 < 50;
+    const isBelow60 = (maxVotes / totalVotes) * 100 < 60;
+
 
     return {
         topParty,
-        isAbove40,
-        isAbove50,
+        isBelow10,
+        isBelow20,
+        isBelow30,
+        isBelow40,
+        isBelow50,
+        isBelow60
     };
 }

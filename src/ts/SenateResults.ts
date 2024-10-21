@@ -1,5 +1,5 @@
 import SenateResults from "../interfaces/SenateResults.ts";
-import {SenateOption} from "../components/Contexts/SenateOptionsContext.tsx";
+import {SenateOption} from "../components/Contexts/OptionsContext.tsx";
 
 interface EvaluationResult {
     topParty: string;

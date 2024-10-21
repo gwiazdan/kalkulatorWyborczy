@@ -2,7 +2,7 @@ import {useContext} from 'react'
 import './App.css'
 import Map from "./components/Map/Map.tsx";
 import {ApiContext} from "./components/Contexts/ApiProvider.tsx";
-import Options from "./components/Options.tsx";
+import Options from "./components/Options/Options.tsx";
 
 function App() {
     const isApiAvailable:boolean = useContext(ApiContext);

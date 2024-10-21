@@ -2,12 +2,12 @@ import React, {useContext, useEffect, useRef, useState} from "react";
 import svgPanZoom from "svg-pan-zoom";
 import {SenateContext} from "./Contexts/SenateContext.tsx";
 import evaluateSenateResults from "../../ts/SenateResults.ts";
-import {useSenateOption} from "../Contexts/SenateOptionsContext.tsx";
+import {useOptions} from "../Contexts/OptionsContext.tsx";
 
 
 const SenateMap: React.FC = () => {
     const senateResults = useContext(SenateContext);
-    const {selectedOption} = useSenateOption();
+    const {senateOption} = useOptions();
     const [activeVoivodeship, setActiveVoivodeship] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const svgRef = useRef<SVGSVGElement>(null);
@@ -24,7 +24,7 @@ const SenateMap: React.FC = () => {
                     path.classList.add('selected');
                 }
                 if (constituencyResult) {
-                    const evaluation = evaluateSenateResults({results: constituencyResult, state: selectedOption});
+                    const evaluation = evaluateSenateResults({results: constituencyResult, state: senateOption});
                     switch (evaluation.topParty) {
                         case 'PIS':
                             path.classList.add('pis');
@@ -72,7 +72,7 @@ const SenateMap: React.FC = () => {
                 setLoading(false);
             })
         }
-    }, [senateResults, activeVoivodeship, selectedOption]);
+    }, [senateResults, activeVoivodeship, senateOption]);
 
     const removeClasses = (path: Element) => {
         path.classList.remove('tossup');

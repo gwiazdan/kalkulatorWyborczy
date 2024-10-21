@@ -2,10 +2,14 @@ import React, {useContext, useEffect, useRef, useState} from "react";
 import svgPanZoom from "svg-pan-zoom";
 import evaluatePartyResults from "../../../ts/PartyResults.ts";
 import {CountiesContext} from "../Contexts/CountiesContext.tsx";
+import {MapOption, useOptions} from "../../Contexts/OptionsContext.tsx";
+import SinglePartyEvaluation from "../../../ts/SinglePartyEvaluation.ts";
+import {PoliticalParty} from "../../../PartiesEnum.ts";
 
 
 const CountiesMap: React.FC = () => {
     const countiesResults = useContext(CountiesContext);
+    const {mapOption, isSinglePartyEnabled, selectedParty} = useOptions();
     const [activeCounty, setActiveCounty] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const svgRef = useRef<SVGSVGElement>(null);
@@ -17,43 +21,117 @@ const CountiesMap: React.FC = () => {
             paths.forEach(path => {
                 removeClasses(path);
                 const id = path.getAttribute('id');
-                console.log(countiesResults);
                 const countyResults = countiesResults.find(result => result.id.toString() === id);
                 if (id === activeCounty) {
                     path.classList.add('selected');
                 }
                 if (countyResults) {
-                    const evaluation = evaluatePartyResults({results: countyResults, state: 0});
-                    switch (evaluation.topParty) {
-                        case 'PIS':
-                            path.classList.add('pis');
-                            break;
-                        case 'KO':
-                            path.classList.add('ko');
-                            break;
-                        case 'TD':
-                            path.classList.add('td');
-                            break;
-                        case 'LEW':
-                            path.classList.add('lew');
-                            break;
-                        case 'KONF':
-                            path.classList.add('konf');
-                            break;
-                        case 'BS':
-                            path.classList.add('bs');
-                            break;
-                        case 'MN':
-                            path.classList.add('mn');
-                            break;
-                        default:
-                    }
-                    if (evaluation.isAbove40) {
-                        if (evaluation.isAbove50) {
+                    if(!(isSinglePartyEnabled && selectedParty)) {
+                        const evaluation = evaluatePartyResults({results: countyResults, state: mapOption});
+                        switch (evaluation.topParty) {
+                            case 'PIS':
+                                path.classList.add('pis');
+                                break;
+                            case 'KO':
+                                path.classList.add('ko');
+                                break;
+                            case 'TD':
+                                path.classList.add('td');
+                                break;
+                            case 'LEW':
+                                path.classList.add('lew');
+                                break;
+                            case 'KONF':
+                                path.classList.add('konf');
+                                break;
+                            case 'BS':
+                                path.classList.add('bs');
+                                break;
+                            case 'MN':
+                                path.classList.add('mn');
+                                break;
+                            case 'SP':
+                                path.classList.add('sp');
+                                break;
+                            case 'RWP':
+                                path.classList.add('rwp');
+                                break;
+                            default:
+                        }
+                        switch (mapOption) {
+                            case MapOption.PoparciePartii: {
+                                if (evaluation.isBelow50) {
+                                    if (evaluation.isBelow40) {
+                                        path.classList.add('bright30');
+                                    } else {
+                                        path.classList.add('bright40');
+                                    }
+                                }
+                                break;
+                            }
+                            case MapOption.RzadVsOpozycja: {
+                                if (evaluation.isBelow60) {
+                                    if (evaluation.isBelow50) {
+                                        path.classList.add('bright30');
+                                    } else {
+                                        path.classList.add('bright40');
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        const evaluation = SinglePartyEvaluation({results: countyResults, selectedParty: selectedParty});
+                        if(!evaluation.zeroVotes) {
+                            switch (selectedParty) {
+                                case PoliticalParty.KoalicjaObywatelska:
+                                    path.classList.add('ko');
+                                    break;
+                                case PoliticalParty.PrawoISprawiedliwosc:
+                                    path.classList.add('pis');
+                                    break;
+                                case PoliticalParty.TrzeciaDroga:
+                                    path.classList.add('td');
+                                    break;
+                                case PoliticalParty.Lewica:
+                                    path.classList.add('lew');
+                                    break;
+                                case PoliticalParty.Konfederacja:
+                                    path.classList.add('konf');
+                                    break;
+                                case PoliticalParty.BezpartyjniSamorzadowcy:
+                                    path.classList.add('bs');
+                                    break;
+                                case PoliticalParty.MniejszoscNiemiecka:
+                                    path.classList.add('mn');
+                                    break;
+                                default:
+                            }
+                        } else path.classList.add('noParty');
+                        if(evaluation.isOver60){
                             path.classList.add('bright50');
-                        } else {
+                        }
+                        if(evaluation.is30to40){
+                            path.classList.add('bright40');
+                        }
+                        if(evaluation.is20to30){
                             path.classList.add('bright30');
                         }
+                        if(evaluation.is10to20){
+                            path.classList.add('bright20');
+                        }
+                        if(evaluation.is5to10){
+                            path.classList.add('bright10');
+                        }
+                        if(evaluation.is3to5){
+                            path.classList.add('bright5');
+                        }
+                        if(evaluation.is1to3){
+                            path.classList.add('bright3');
+                        }
+                        if(evaluation.isBelow1){
+                            path.classList.add('bright0');
+                        }
+
                     }
                 } else {
                     console.warn(`Brak wyników dla gminy o ID ${id}`);
@@ -61,34 +139,40 @@ const CountiesMap: React.FC = () => {
                 setLoading(false);
             })
         }
-    }, [countiesResults, activeCounty]);
+    }, [countiesResults, activeCounty, mapOption, isSinglePartyEnabled, selectedParty]);
     const removeClasses = (path: Element) => {
-        path.classList.remove('bright50');
+        path.classList.remove('noParty');
+        path.classList.remove('bright0');
+        path.classList.remove('bright3');
+        path.classList.remove('bright5');
+        path.classList.remove('bright10');
+        path.classList.remove('bright20');
         path.classList.remove('bright30');
+        path.classList.remove('bright40');
+        path.classList.remove('bright50');
         path.classList.remove('pis');
         path.classList.remove('ko');
         path.classList.remove('td');
-        path.classList.remove('lewica');
-        path.classList.remove('konfederacja');
+        path.classList.remove('lew');
+        path.classList.remove('konf');
         path.classList.remove('bs');
+        path.classList.remove('mn');
         path.classList.remove('selected');
-
+        path.classList.remove('rwp');
+        path.classList.remove('sp');
     }
     useEffect(() => {
         if (svgRef.current) {
             // Inicjalizacja svg-pan-zoom
             const panZoomInstance = svgPanZoom(svgRef.current, {
                 zoomEnabled: true,
-                controlIconsEnabled: true, // Włączenie ikon sterowania
-                fit: true, // Dopasowanie SVG do kontenera
-                center: true, // Wycentrowanie SVG
+                controlIconsEnabled: true,
+                fit: true,
+                center: true,
                 minZoom: 0.5,
                 maxZoom: 5,
                 contain: true,
             });
-
-
-            // Czyszczenie przy odmontowaniu komponentu
             return () => panZoomInstance.destroy();
         }
     }, []);

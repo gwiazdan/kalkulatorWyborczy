@@ -8,5 +8,7 @@ export default interface PartyResults {
     votesForKONF: number;
     votesForPIS: number;
     votesForBS: number;
-    votesForMN: number;
+    votesForMN: number | null;
+    votesForGovernment: number;
+    votesForOpposition: number;
 }

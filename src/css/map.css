@@ -6,8 +6,7 @@
     --konfederacja: #102440;
     --bs: #DA251D;
     --mn: #0780C4;
-    --sp: #e19f39;
-    --rwp: #102440;
+    --noParty: #efe;
 }
 .gmina
 {
@@ -70,6 +69,9 @@
     -webkit-filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
     filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
 }
+.noParty {
+    fill: var(--noParty)
+}
 
 .selected
 {
@@ -84,10 +86,10 @@
     fill: var(--ko);
 }
 .sp {
-    fill: var(--sp);
+    fill: var(--ko);
 }
 .rwp {
-    fill: var(--rwp);
+    fill: var(--pis);
 }
 .lew {
     fill: var(--lewica);
@@ -96,21 +98,48 @@
 .td {
     fill: var(--td);
 }
+.bs {
+    fill: var(--bs);
+}
+.mn {
+    fill:var(--mn);
+}
 
 .konf {
     fill: var(--konfederacja);
 }
-
+.bright0{
+    -webkit-filter: brightness(500%);
+    filter: brightness(500%);
+}
+.bright3{
+    -webkit-filter: brightness(450%);
+    filter: brightness(450%);
+}
+.bright5{
+    -webkit-filter: brightness(400%);
+    filter: brightness(400%);
+}
+.bright10{
+    -webkit-filter: brightness(300%);
+    filter: brightness(300%);
+}
+.bright20{
+    -webkit-filter: brightness(200%);
+    filter: brightness(200%);
+}
 .bright30 {
+    -webkit-filter: brightness(150%);
+    filter: brightness(150%);
+}
+.bright40 {
     -webkit-filter: brightness(125%);
     filter: brightness(125%);
 }
-
 .bright50 {
-    -webkit-filter: brightness(75%);
-    filter: brightness(75%);
+    -webkit-filter: brightness(90%);
+    filter: brightness(90%);
 }
-
 .tossup {
     -webkit-filter: brightness(200%);
     filter: brightness(200%);
