@@ -4,6 +4,8 @@ import evaluatePartyResults from "../../../ts/PartyResults.ts";
 import {MunicipalitiesContext} from "../Contexts/MunicipalitiesContext.tsx";
 import {MapOption, useOptions} from "../../Contexts/OptionsContext.tsx";
 import SinglePartyEvaluation from "../../../ts/SinglePartyEvaluation.ts";
+import getExtremePartyResults from "../../../ts/MaximumPartyValues.ts";
+import { calculateColor } from "../../../ts/CalculateColor.ts";
 import {PoliticalParty} from "../../../PartiesEnum.ts";
 
 
@@ -16,10 +18,12 @@ const MunicipalitiesMap: React.FC = () => {
 
     useEffect(()=>{
         if (svgRef.current && municipalitiesResults) {
+            const extremeResults = getExtremePartyResults(municipalitiesResults);
             setLoading(true);
             const paths = svgRef.current.querySelectorAll('.gmina');
             paths.forEach(path => {
                 removeClasses(path);
+                removePathColor(path);
                 const id = path.getAttribute('id');
                 const municipalityResult = municipalitiesResults.find(result => result.id.toString() === id);
                 if (id === activeMunicipality) {
@@ -29,31 +33,31 @@ const MunicipalitiesMap: React.FC = () => {
                     if(!(isSinglePartyEnabled && selectedParty)){
                         const evaluation = evaluatePartyResults({results: municipalityResult, state: mapOption});
                         switch (evaluation.topParty) {
-                            case 'PIS':
+                            case PoliticalParty.PrawoISprawiedliwosc:
                                 path.classList.add('pis');
                                 break;
-                            case 'KO':
+                            case PoliticalParty.KoalicjaObywatelska:
                                 path.classList.add('ko');
                                 break;
-                            case 'TD':
+                            case PoliticalParty.TrzeciaDroga:
                                 path.classList.add('td');
                                 break;
-                            case 'LEW':
+                            case PoliticalParty.Lewica:
                                 path.classList.add('lew');
                                 break;
-                            case 'KONF':
+                            case PoliticalParty.Konfederacja:
                                 path.classList.add('konf');
                                 break;
-                            case 'BS':
+                            case PoliticalParty.BezpartyjniSamorzadowcy:
                                 path.classList.add('bs');
                                 break;
-                            case 'MN':
+                            case PoliticalParty.MniejszoscNiemiecka:
                                 path.classList.add('mn');
                                 break;
-                            case 'SP':
+                            case PoliticalParty.PaktSenacki:
                                 path.classList.add('sp');
                                 break;
-                            case 'RWP':
+                            case PoliticalParty.PaktPrawicy:
                                 path.classList.add('rwp');
                                 break;
                             default:
@@ -80,56 +84,21 @@ const MunicipalitiesMap: React.FC = () => {
                             }
                         }
                     } else {
-                        const evaluation = SinglePartyEvaluation({results: municipalityResult, selectedParty: selectedParty});
-                        if(!evaluation.zeroVotes) {
-                            switch (selectedParty) {
-                                case PoliticalParty.KoalicjaObywatelska:
-                                    path.classList.add('ko');
-                                    break;
-                                case PoliticalParty.PrawoISprawiedliwosc:
-                                    path.classList.add('pis');
-                                    break;
-                                case PoliticalParty.TrzeciaDroga:
-                                    path.classList.add('td');
-                                    break;
-                                case PoliticalParty.Lewica:
-                                    path.classList.add('lew');
-                                    break;
-                                case PoliticalParty.Konfederacja:
-                                    path.classList.add('konf');
-                                    break;
-                                case PoliticalParty.BezpartyjniSamorzadowcy:
-                                    path.classList.add('bs');
-                                    break;
-                                case PoliticalParty.MniejszoscNiemiecka:
-                                    path.classList.add('mn');
-                                    break;
-                                default:
-                            }
-                        } else path.classList.add('noParty');
-                        if(evaluation.isOver60){
-                            path.classList.add('bright50');
-                        }
-                        if(evaluation.is30to40){
-                            path.classList.add('bright40');
-                        }
-                        if(evaluation.is20to30){
-                            path.classList.add('bright30');
-                        }
-                        if(evaluation.is10to20){
-                            path.classList.add('bright20');
-                        }
-                        if(evaluation.is5to10){
-                            path.classList.add('bright10');
-                        }
-                        if(evaluation.is3to5){
-                            path.classList.add('bright5');
-                        }
-                        if(evaluation.is1to3){
-                            path.classList.add('bright3');
-                        }
-                        if(evaluation.isBelow1){
-                            path.classList.add('bright0');
+                        const evaluation = SinglePartyEvaluation({
+                            results: municipalityResult,
+                            selectedParty: selectedParty
+                        });
+
+                        // Sprawdzanie, czy są głosy
+                        if (!evaluation.zeroVotes) {
+                            // Obliczanie koloru
+                            const color = calculateColor({selectedParty: selectedParty, results: municipalityResult, extremePartyResults: extremeResults}); // Zastąp min i max odpowiednimi wartościami
+
+                            // Ustawienie koloru na atrybucie fill
+                            setPathColor(path, color);
+
+                        } else {
+                            path.classList.add('noParty');
                         }
 
                     }
@@ -141,16 +110,16 @@ const MunicipalitiesMap: React.FC = () => {
             })
         }
     }, [municipalitiesResults, activeMunicipality, mapOption, isSinglePartyEnabled, selectedParty]);
+    const setPathColor = (path: Element, color: string) => {
+        path.setAttribute('fill', color);
+    };
+    const removePathColor = (path: Element) => {
+        path.removeAttribute('fill');
+    }
     const removeClasses = (path: Element) => {
         path.classList.remove('noParty');
-        path.classList.remove('bright0');
-        path.classList.remove('bright3');
-        path.classList.remove('bright5');
-        path.classList.remove('bright10');
-        path.classList.remove('bright20');
         path.classList.remove('bright30');
         path.classList.remove('bright40');
-        path.classList.remove('bright50');
         path.classList.remove('pis');
         path.classList.remove('ko');
         path.classList.remove('td');

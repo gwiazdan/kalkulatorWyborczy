@@ -10,7 +10,10 @@ const SinglePartyOptions: React.FC = () => {
         setIsSinglePartyEnabled(!isSinglePartyEnabled);
     }
     const handleSelectChange = (event:React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedParty(event.target.value as PoliticalParty);
+        const option:string = event.target.value;
+        if(option!==null && option!=='default'){
+            setSelectedParty(event.target.value as PoliticalParty);
+        }
     }
 
     return (
@@ -24,7 +27,7 @@ const SinglePartyOptions: React.FC = () => {
             </label>
             <select  id="countries" disabled={!isSinglePartyEnabled}  value={selectedParty || 'default'} onChange={handleSelectChange}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option selected value="default">Wybierz partię</option>
+                <option selected value="default" disabled={selectedParty!=null}>Wybierz partię</option>
                 <option value="KO">Koalicja Obywatelska</option>
                 <option value="PIS">Prawo i Sprawiedliwość</option>
                 <option value="KONF">Konfederacja</option>

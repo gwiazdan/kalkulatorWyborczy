@@ -5,5 +5,7 @@ export enum PoliticalParty {
     TrzeciaDroga = 'TD',
     Lewica = 'LEW',
     BezpartyjniSamorzadowcy = 'BS',
-    MniejszoscNiemiecka = 'MN'
+    MniejszoscNiemiecka = 'MN',
+    PaktSenacki = 'SP',
+    PaktPrawicy = 'RWP'
 }

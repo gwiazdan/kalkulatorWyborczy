@@ -6,7 +6,7 @@
     --konfederacja: #102440;
     --bs: #DA251D;
     --mn: #0780C4;
-    --noParty: #efe;
+    --noParty: #fff;
 }
 .gmina
 {
@@ -20,13 +20,13 @@
     filter: drop-shadow(15px 15px 15px #000000);
 }
 .gmina.bright30:hover {
-    -webkit-filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
-    filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
+    -webkit-filter: brightness(150%) drop-shadow(15px 15px 15px #000000);
+    filter: brightness(150%) drop-shadow(15px 15px 15px #000000);
 }
 
-.gmina.bright50:hover {
-    -webkit-filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
-    filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
+.gmina.bright40:hover {
+    -webkit-filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
+    filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
 }
 
 .wojewodztwo {
@@ -40,13 +40,13 @@
     filter: drop-shadow(15px 15px 15px #000000);
 }
 .wojewodztwo.bright30:hover {
-    -webkit-filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
-    filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
+    -webkit-filter: brightness(150%) drop-shadow(15px 15px 15px #000000);
+    filter: brightness(150%) drop-shadow(15px 15px 15px #000000);
 }
 
-.wojewodztwo.bright50:hover {
-    -webkit-filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
-    filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
+.wojewodztwo.bright40:hover {
+    -webkit-filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
+    filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
 }
 .powiat,
 .okregSenacki {
@@ -61,13 +61,13 @@
 }
 
 .powiat.bright30:hover {
-    -webkit-filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
-    filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
+    -webkit-filter: brightness(150%) drop-shadow(15px 15px 15px #000000);
+    filter: brightness(150%) drop-shadow(15px 15px 15px #000000);
 }
 
-.powiat.bright50:hover {
-    -webkit-filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
-    filter: brightness(75%) drop-shadow(15px 15px 15px #000000);
+.powiat.bright40:hover {
+    -webkit-filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
+    filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
 }
 .noParty {
     fill: var(--noParty)
@@ -108,26 +108,6 @@
 .konf {
     fill: var(--konfederacja);
 }
-.bright0{
-    -webkit-filter: brightness(500%);
-    filter: brightness(500%);
-}
-.bright3{
-    -webkit-filter: brightness(450%);
-    filter: brightness(450%);
-}
-.bright5{
-    -webkit-filter: brightness(400%);
-    filter: brightness(400%);
-}
-.bright10{
-    -webkit-filter: brightness(300%);
-    filter: brightness(300%);
-}
-.bright20{
-    -webkit-filter: brightness(200%);
-    filter: brightness(200%);
-}
 .bright30 {
     -webkit-filter: brightness(150%);
     filter: brightness(150%);
@@ -135,10 +115,6 @@
 .bright40 {
     -webkit-filter: brightness(125%);
     filter: brightness(125%);
-}
-.bright50 {
-    -webkit-filter: brightness(90%);
-    filter: brightness(90%);
 }
 .tossup {
     -webkit-filter: brightness(200%);

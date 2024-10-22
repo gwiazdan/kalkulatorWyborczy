@@ -8,7 +8,7 @@ interface OptionsContextType {
     setSenateOption: (option: SenateOption) => void;
     isSinglePartyEnabled: boolean;
     setIsSinglePartyEnabled: (option: boolean) => void;
-    selectedParty: PoliticalParty;
+    selectedParty: PoliticalParty | undefined;
     setSelectedParty: (option: PoliticalParty) => void;
 }
 
@@ -31,12 +31,12 @@ export const OptionsProvider: React.FC<OptionsProviderProps> = ({ children }) =>
 
     const [isSinglePartyEnabled, setIsSinglePartyEnabled] = useState<boolean>(() => {
        const savedOption = sessionStorage.getItem('singlepartyenabled') as boolean | null;
-       return savedOption ? JSON.parse(savedOption) : false;
+       return savedOption ? JSON.parse(String(savedOption)) : false;
     });
 
-    const [selectedParty, setSelectedParty] = useState<PoliticalParty | null>(() => {
+    const [selectedParty, setSelectedParty] = useState<PoliticalParty | undefined>(() => {
         const savedOption = sessionStorage.getItem('selectedParty') as PoliticalParty;
-        return savedOption ? savedOption : null;
+        return savedOption ? savedOption : undefined;
     });
 
     useEffect(() => {

@@ -1,8 +1,9 @@
 import { MapOption } from "../components/Contexts/OptionsContext.tsx";
 import PartyResults from "../interfaces/PartyResults.ts";
+import {PoliticalParty} from "../PartiesEnum.ts";
 
 interface EvaluationResult {
-    topParty: string;
+    topParty: PoliticalParty;
     isBelow10: boolean;
     isBelow20: boolean;
     isBelow30: boolean;
@@ -17,7 +18,7 @@ interface PartyResultsProps {
 
 export default function evaluatePartyResults({results, state}:PartyResultsProps): EvaluationResult {
 
-    let topParty: string = '';
+    let topParty: PoliticalParty;
 
     const totalVotes: number = results.numberOfVotes;
 
@@ -59,31 +60,31 @@ export default function evaluatePartyResults({results, state}:PartyResultsProps)
     }
     switch(maxVotes){
         case results.votesForBS:
-            topParty='BS';
+            topParty=PoliticalParty.BezpartyjniSamorzadowcy;
             break;
         case results.votesForKO:
-            topParty='KO';
+            topParty=PoliticalParty.KoalicjaObywatelska;
             break;
         case results.votesForLEW:
-            topParty='LEW';
+            topParty=PoliticalParty.Lewica;
             break;
         case results.votesForPIS:
-            topParty='PIS';
+            topParty=PoliticalParty.PrawoISprawiedliwosc;
             break;
         case results.votesForTD:
-            topParty='TD';
+            topParty=PoliticalParty.TrzeciaDroga;
             break;
         case results.votesForKONF:
-            topParty='KONF';
+            topParty=PoliticalParty.Konfederacja;
             break;
-
         case results.votesForGovernment:
-            topParty='SP';
+            topParty=PoliticalParty.PaktSenacki;
             break;
         case results.votesForOpposition:
-            topParty='RWP';
+            topParty=PoliticalParty.PaktPrawicy;
             break;
         default:
+            topParty=PoliticalParty.MniejszoscNiemiecka;
             break;
     }
     const isBelow10 = (maxVotes / totalVotes) * 100 < 10;
