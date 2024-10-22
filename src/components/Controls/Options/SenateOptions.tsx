@@ -1,5 +1,5 @@
 import React from "react";
-import {SenateOption, useOptions} from "../Contexts/OptionsContext.tsx";
+import {SenateOption, useOptions} from "../../Contexts/OptionsContext.tsx";
 
 const SenateOptions: React.FC = () => {
     const {senateOption, setSenateOption} = useOptions();

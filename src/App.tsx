@@ -2,7 +2,8 @@ import {useContext} from 'react'
 import './App.css'
 import Map from "./components/Map/Map.tsx";
 import {ApiContext} from "./components/Contexts/ApiProvider.tsx";
-import Options from "./components/Options/Options.tsx";
+import {Controls} from "./components/Controls/Controls.tsx";
+import {AppHeader} from "./components/AppHeader.tsx";
 
 function App() {
     const isApiAvailable:boolean = useContext(ApiContext);
@@ -11,14 +12,16 @@ function App() {
 
     return (
         <>
-            <div className="grid grid-cols-2 h-full">
+            <AppHeader/>
+            <div className="grid lg:grid-cols-2 h-full">
                 <div>
-                    <Options/>
+                    <Controls/>
                 </div>
-                <div className="flex flex-col map justify-center p-2">
+                <div className="flex flex-col map justify-center p-3">
                     <Map/>
                 </div>
             </div>
+
         </>
     )
 }

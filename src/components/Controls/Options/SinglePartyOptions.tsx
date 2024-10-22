@@ -1,6 +1,6 @@
 import React from "react";
-import {PoliticalParty} from "../../PartiesEnum.ts";
-import { useOptions } from "../Contexts/OptionsContext.tsx";
+import {PoliticalParty} from "../../../PartiesEnum.ts";
+import {useOptions} from "../../Contexts/OptionsContext.tsx";
 
 const SinglePartyOptions: React.FC = () => {
     const {isSinglePartyEnabled, setIsSinglePartyEnabled, selectedParty, setSelectedParty} = useOptions();

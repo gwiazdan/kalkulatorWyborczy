@@ -1,5 +1,5 @@
 import React from "react";
-import {MapOption, useOptions} from "../Contexts/OptionsContext.tsx";
+import {MapOption, useOptions} from "../../Contexts/OptionsContext.tsx";
 
 const MapPaintingOptions: React.FC = () => {
     const {mapOption, setMapOption} = useOptions();
