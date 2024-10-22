@@ -7,6 +7,7 @@ interface CalculateColorProps {
     selectedParty: PoliticalParty;
     extremePartyResults: ExtremePartyResults;
 }
+
 const partyColors = {
     [PoliticalParty.KoalicjaObywatelska]: '#e19f39',
     [PoliticalParty.PrawoISprawiedliwosc]: '#073A76',
@@ -17,8 +18,8 @@ const partyColors = {
     [PoliticalParty.MniejszoscNiemiecka]: '#0780C4',
 };
 
-export function calculateColor({ selectedParty, results, extremePartyResults }: CalculateColorProps) {
-    if(selectedParty==PoliticalParty.PaktSenacki|| selectedParty == PoliticalParty.PaktPrawicy){
+export function calculateColor({selectedParty, results, extremePartyResults}: CalculateColorProps) {
+    if (selectedParty == PoliticalParty.PaktSenacki || selectedParty == PoliticalParty.PaktPrawicy) {
         return '#ffffff';
     }
 
@@ -32,7 +33,7 @@ export function calculateColor({ selectedParty, results, extremePartyResults }: 
         [PoliticalParty.MniejszoscNiemiecka]: results.votesForMN != null ? results.votesForMN : 0,
     };
 
-    const partyVotes = partyVotesMap[selectedParty] / results.numberOfVotes *100;
+    const partyVotes = partyVotesMap[selectedParty] / results.numberOfVotes * 100;
     const max = extremePartyResults[`Max${selectedParty}`];
     const min = extremePartyResults[`Min${selectedParty}`];
 
