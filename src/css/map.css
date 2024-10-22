@@ -19,16 +19,6 @@
     transition: all 0.25s ease-out;
     filter: drop-shadow(15px 15px 15px #000000);
 }
-.gmina.bright30:hover {
-    -webkit-filter: brightness(150%) drop-shadow(15px 15px 15px #000000);
-    filter: brightness(150%) drop-shadow(15px 15px 15px #000000);
-}
-
-.gmina.bright40:hover {
-    -webkit-filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
-    filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
-}
-
 .wojewodztwo {
     stroke-width: 2;
     stroke: #000;
@@ -38,15 +28,6 @@
     cursor: pointer;
     transition: all 0.25s ease-out;
     filter: drop-shadow(15px 15px 15px #000000);
-}
-.wojewodztwo.bright30:hover {
-    -webkit-filter: brightness(150%) drop-shadow(15px 15px 15px #000000);
-    filter: brightness(150%) drop-shadow(15px 15px 15px #000000);
-}
-
-.wojewodztwo.bright40:hover {
-    -webkit-filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
-    filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
 }
 .powiat,
 .okregSenacki {
@@ -59,20 +40,9 @@
     transition: all 0.25s ease-out;
     filter: drop-shadow(15px 15px 15px #000000);
 }
-
-.powiat.bright30:hover {
-    -webkit-filter: brightness(150%) drop-shadow(15px 15px 15px #000000);
-    filter: brightness(150%) drop-shadow(15px 15px 15px #000000);
-}
-
-.powiat.bright40:hover {
-    -webkit-filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
-    filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
-}
 .noParty {
     fill: var(--noParty)
 }
-
 .selected
 {
     stroke: white;
@@ -104,7 +74,6 @@
 .mn {
     fill:var(--mn);
 }
-
 .konf {
     fill: var(--konfederacja);
 }

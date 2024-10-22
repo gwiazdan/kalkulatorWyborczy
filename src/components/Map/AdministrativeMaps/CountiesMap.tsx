@@ -2,11 +2,10 @@ import React, {useContext, useEffect, useRef, useState} from "react";
 import svgPanZoom from "svg-pan-zoom";
 import evaluatePartyResults from "../../../ts/PartyResults.ts";
 import {CountiesContext} from "../Contexts/CountiesContext.tsx";
-import {MapOption, useOptions} from "../../Contexts/OptionsContext.tsx";
+import {useOptions} from "../../Contexts/OptionsContext.tsx";
 import SinglePartyEvaluation from "../../../ts/SinglePartyEvaluation.ts";
 import {calculateColor} from "../../../ts/CalculateColor.ts";
 import getExtremePartyResults from "../../../ts/MaximumPartyValues.ts";
-import {PoliticalParty} from "../../../PartiesEnum.ts";
 
 
 const CountiesMap: React.FC = () => {
@@ -32,57 +31,13 @@ const CountiesMap: React.FC = () => {
                 if (countyResults) {
                     if(!(isSinglePartyEnabled && selectedParty)) {
                         const evaluation = evaluatePartyResults({results: countyResults, state: mapOption});
-                        switch (evaluation.topParty) {
-                            case PoliticalParty.PrawoISprawiedliwosc:
-                                path.classList.add('pis');
-                                break;
-                            case PoliticalParty.KoalicjaObywatelska:
-                                path.classList.add('ko');
-                                break;
-                            case PoliticalParty.TrzeciaDroga:
-                                path.classList.add('td');
-                                break;
-                            case PoliticalParty.Lewica:
-                                path.classList.add('lew');
-                                break;
-                            case PoliticalParty.Konfederacja:
-                                path.classList.add('konf');
-                                break;
-                            case PoliticalParty.BezpartyjniSamorzadowcy:
-                                path.classList.add('bs');
-                                break;
-                            case PoliticalParty.MniejszoscNiemiecka:
-                                path.classList.add('mn');
-                                break;
-                            case PoliticalParty.PaktSenacki:
-                                path.classList.add('sp');
-                                break;
-                            case PoliticalParty.PaktPrawicy:
-                                path.classList.add('rwp');
-                                break;
-                            default:
-                        }
-                        switch (mapOption) {
-                            case MapOption.PoparciePartii: {
-                                if (evaluation.isBelow50) {
-                                    if (evaluation.isBelow40) {
-                                        path.classList.add('bright30');
-                                    } else {
-                                        path.classList.add('bright40');
-                                    }
-                                }
-                                break;
-                            }
-                            case MapOption.RzadVsOpozycja: {
-                                if (evaluation.isBelow60) {
-                                    if (evaluation.isBelow50) {
-                                        path.classList.add('bright30');
-                                    } else {
-                                        path.classList.add('bright40');
-                                    }
-                                }
-                            }
-                        }
+                        const color = calculateColor({
+                            selectedParty: evaluation.topParty,
+                            results: countyResults,
+                            extremePartyResults: extremeResults
+                        }); // Zastąp min i max odpowiednimi wartościami
+
+                        setPathColor(path, color);
                     } else {
                         const evaluation = SinglePartyEvaluation({
                             results: countyResults,
@@ -118,18 +73,7 @@ const CountiesMap: React.FC = () => {
     }
     const removeClasses = (path: Element) => {
         path.classList.remove('noParty');
-        path.classList.remove('bright30');
-        path.classList.remove('bright40');
-        path.classList.remove('pis');
-        path.classList.remove('ko');
-        path.classList.remove('td');
-        path.classList.remove('lew');
-        path.classList.remove('konf');
-        path.classList.remove('bs');
-        path.classList.remove('mn');
         path.classList.remove('selected');
-        path.classList.remove('rwp');
-        path.classList.remove('sp');
     }
     useEffect(() => {
         if (svgRef.current) {

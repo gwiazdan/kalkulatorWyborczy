@@ -16,13 +16,11 @@ const partyColors = {
     [PoliticalParty.Lewica]: '#ac145a',
     [PoliticalParty.BezpartyjniSamorzadowcy]: '#DA251D',
     [PoliticalParty.MniejszoscNiemiecka]: '#0780C4',
+    [PoliticalParty.PaktSenacki]: '#e19f39',
+    [PoliticalParty.PaktPrawicy]: '#073A76'
 };
 
 export function calculateColor({selectedParty, results, extremePartyResults}: CalculateColorProps) {
-    if (selectedParty == PoliticalParty.PaktSenacki || selectedParty == PoliticalParty.PaktPrawicy) {
-        return '#ffffff';
-    }
-
     const partyVotesMap = {
         [PoliticalParty.KoalicjaObywatelska]: results.votesForKO,
         [PoliticalParty.PrawoISprawiedliwosc]: results.votesForPIS,
@@ -31,6 +29,8 @@ export function calculateColor({selectedParty, results, extremePartyResults}: Ca
         [PoliticalParty.Lewica]: results.votesForLEW,
         [PoliticalParty.BezpartyjniSamorzadowcy]: results.votesForBS,
         [PoliticalParty.MniejszoscNiemiecka]: results.votesForMN != null ? results.votesForMN : 0,
+        [PoliticalParty.PaktSenacki]: results.votesForGovernment,
+        [PoliticalParty.PaktPrawicy]: results.votesForOpposition
     };
 
     const partyVotes = partyVotesMap[selectedParty] / results.numberOfVotes * 100;

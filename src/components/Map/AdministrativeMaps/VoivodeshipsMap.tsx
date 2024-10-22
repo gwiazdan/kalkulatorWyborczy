@@ -2,11 +2,10 @@ import React, {useContext, useEffect, useRef, useState} from "react";
 import svgPanZoom from "svg-pan-zoom";
 import evaluatePartyResults from "../../../ts/PartyResults.ts";
 import {VoivodeshipsContext} from "../Contexts/VoivodeshipsContext.tsx";
-import {MapOption, useOptions} from "../../Contexts/OptionsContext.tsx";
+import {useOptions} from "../../Contexts/OptionsContext.tsx";
 import SinglePartyEvaluation from "../../../ts/SinglePartyEvaluation.ts";
 import getExtremePartyResults from "../../../ts/MaximumPartyValues.ts";
 import {calculateColor} from "../../../ts/CalculateColor.ts";
-import {PoliticalParty} from "../../../PartiesEnum.ts";
 
 const VoivodeshipsMap: React.FC = () => {
     const voivodeshipsResults = useContext(VoivodeshipsContext);
@@ -31,57 +30,14 @@ const VoivodeshipsMap: React.FC = () => {
                 if (voivodeshipResults) {
                     if(!(isSinglePartyEnabled && selectedParty)) {
                         const evaluation = evaluatePartyResults({results: voivodeshipResults, state: mapOption});
-                        switch (evaluation.topParty) {
-                            case PoliticalParty.PrawoISprawiedliwosc:
-                                path.classList.add('pis');
-                                break;
-                            case PoliticalParty.KoalicjaObywatelska:
-                                path.classList.add('ko');
-                                break;
-                            case PoliticalParty.TrzeciaDroga:
-                                path.classList.add('td');
-                                break;
-                            case PoliticalParty.Lewica:
-                                path.classList.add('lew');
-                                break;
-                            case PoliticalParty.Konfederacja:
-                                path.classList.add('konf');
-                                break;
-                            case PoliticalParty.BezpartyjniSamorzadowcy:
-                                path.classList.add('bs');
-                                break;
-                            case PoliticalParty.MniejszoscNiemiecka:
-                                path.classList.add('mn');
-                                break;
-                            case PoliticalParty.PaktSenacki:
-                                path.classList.add('sp');
-                                break;
-                            case PoliticalParty.PaktPrawicy:
-                                path.classList.add('rwp');
-                                break;
-                            default:
-                        }
-                        switch (mapOption) {
-                            case MapOption.PoparciePartii: {
-                                if (evaluation.isBelow50) {
-                                    if (evaluation.isBelow40) {
-                                        path.classList.add('bright30');
-                                    } else {
-                                        path.classList.add('bright40');
-                                    }
-                                }
-                                break;
-                            }
-                            case MapOption.RzadVsOpozycja: {
-                                if (evaluation.isBelow60) {
-                                    if (evaluation.isBelow50) {
-                                        path.classList.add('bright30');
-                                    } else {
-                                        path.classList.add('bright40');
-                                    }
-                                }
-                            }
-                        }
+                        const color = calculateColor({
+                            selectedParty: evaluation.topParty,
+                            results: voivodeshipResults,
+                            extremePartyResults: extremeResults
+                        }); // Zastąp min i max odpowiednimi wartościami
+
+                        setPathColor(path, color);
+
                     } else {
                         const evaluation = SinglePartyEvaluation({
                             results: voivodeshipResults,
@@ -116,18 +72,7 @@ const VoivodeshipsMap: React.FC = () => {
     }
     const removeClasses = (path: Element) => {
         path.classList.remove('noParty');
-        path.classList.remove('bright30');
-        path.classList.remove('bright40');
-        path.classList.remove('pis');
-        path.classList.remove('ko');
-        path.classList.remove('td');
-        path.classList.remove('lew');
-        path.classList.remove('konf');
-        path.classList.remove('bs');
-        path.classList.remove('mn');
         path.classList.remove('selected');
-        path.classList.remove('rwp');
-        path.classList.remove('sp');
     }
     useEffect(() => {
         if (svgRef.current) {

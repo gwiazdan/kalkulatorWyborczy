@@ -1,15 +1,9 @@
-import { MapOption } from "../components/Contexts/OptionsContext.tsx";
+import {MapOption} from "../components/Contexts/OptionsContext.tsx";
 import PartyResults from "../interfaces/PartyResults.ts";
 import {PoliticalParty} from "../PartiesEnum.ts";
 
 interface EvaluationResult {
     topParty: PoliticalParty;
-    isBelow10: boolean;
-    isBelow20: boolean;
-    isBelow30: boolean;
-    isBelow40: boolean;
-    isBelow50: boolean;
-    isBelow60: boolean;
 }
 interface PartyResultsProps {
     results: PartyResults;
@@ -19,8 +13,6 @@ interface PartyResultsProps {
 export default function evaluatePartyResults({results, state}:PartyResultsProps): EvaluationResult {
 
     let topParty: PoliticalParty;
-
-    const totalVotes: number = results.numberOfVotes;
 
     let maxVotes: number;
 
@@ -87,21 +79,7 @@ export default function evaluatePartyResults({results, state}:PartyResultsProps)
             topParty=PoliticalParty.MniejszoscNiemiecka;
             break;
     }
-    const isBelow10 = (maxVotes / totalVotes) * 100 < 10;
-    const isBelow20 = (maxVotes / totalVotes) * 100 < 20;
-    const isBelow30 = (maxVotes / totalVotes) * 100 < 30;
-    const isBelow40 = (maxVotes / totalVotes) * 100 < 40;
-    const isBelow50 = (maxVotes / totalVotes) * 100 < 50;
-    const isBelow60 = (maxVotes / totalVotes) * 100 < 60;
-
-
     return {
         topParty,
-        isBelow10,
-        isBelow20,
-        isBelow30,
-        isBelow40,
-        isBelow50,
-        isBelow60
     };
 }
