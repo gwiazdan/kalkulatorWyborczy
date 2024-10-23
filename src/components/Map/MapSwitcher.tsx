@@ -6,7 +6,7 @@ import {MunicipalitiesProvider} from "./Contexts/MunicipalitiesContext.tsx";
 import {CountiesProvider} from "./Contexts/CountiesContext.tsx";
 import {VoivodeshipsProvider} from "./Contexts/VoivodeshipsContext.tsx";
 import {SenateProvider} from "./Contexts/SenateContext.tsx";
-import SenateMap from "./SenateMap.tsx";
+import SenateMap from "./ConstituencyMaps/SenateMap.tsx";
 
 
 interface MapSwitcherProps {

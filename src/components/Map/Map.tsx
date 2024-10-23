@@ -21,9 +21,7 @@ const Map: React.FC = () => {
     return (
         <>
             <MapSwitch onChange={handleStateChange}/>
-            <div className="flex h-full">
-                <MapSwitcher currentState={currentState}/>
-            </div>
+            <MapSwitcher currentState={currentState}/>
         </>
     )
 
