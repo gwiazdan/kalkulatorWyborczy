@@ -1,15 +1,15 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import svgPanZoom from "svg-pan-zoom";
 import evaluatePartyResults from "../../../ts/PartyResults.ts";
-import {CountiesContext} from "../Contexts/CountiesContext.tsx";
 import {useOptions} from "../../Contexts/OptionsContext.tsx";
 import SinglePartyEvaluation from "../../../ts/SinglePartyEvaluation.ts";
 import {calculateColor} from "../../../ts/CalculateColor.ts";
 import getExtremePartyResults from "../../../ts/MaximumPartyValues.ts";
+import {ResultsContext} from "../Contexts/ElectionsResultsContext.tsx";
 
 
 const CountiesMap: React.FC = () => {
-    const countiesResults = useContext(CountiesContext);
+    const {countiesResults} = useContext(ResultsContext);
     const {mapOption, isSinglePartyEnabled, selectedParty} = useOptions();
     const [activeCounty, setActiveCounty] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);

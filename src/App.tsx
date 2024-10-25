@@ -7,7 +7,6 @@ import {AppHeader} from "./components/AppHeader.tsx";
 
 function App() {
     const isApiAvailable:boolean = useContext(ApiContext);
-
     if (!isApiAvailable) return <div>Błąd: nie można połączyć się z Api</div>;
 
     return (

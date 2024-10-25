@@ -1,4 +1,5 @@
 import React, {createContext, ReactNode, useEffect, useState} from 'react';
+import {fetchAllData} from "../../services/db.ts";
 
 export const ApiContext = createContext<boolean>(false);
 
@@ -23,6 +24,7 @@ export const ApiProvider: React.FC<ApiProviderProps> = ({children}) => {
         };
 
         checkApiAvailability();
+        fetchAllData();
     }, [isApiAvailable]);
 
     return (

@@ -2,11 +2,7 @@ import React from "react";
 import MunicipalitiesMap from "./AdministrativeMaps/MunicipalitiesMap.tsx";
 import CountiesMap from './AdministrativeMaps/CountiesMap.tsx';
 import VoivodeshipsMap from "./AdministrativeMaps/VoivodeshipsMap.tsx";
-import {MunicipalitiesProvider} from "./Contexts/MunicipalitiesContext.tsx";
-import {CountiesProvider} from "./Contexts/CountiesContext.tsx";
-import {VoivodeshipsProvider} from "./Contexts/VoivodeshipsContext.tsx";
-import {SenateProvider} from "./Contexts/SenateContext.tsx";
-import SenateMap from "./ConstituencyMaps/SenateMap.tsx";
+import {ElectionMap} from "./ElectionMap.tsx";
 
 
 interface MapSwitcherProps {
@@ -19,33 +15,25 @@ const MapSwitcher: React.FC<MapSwitcherProps> = ({currentState}) => {
         case 'gminy':
             return (
                 <>
-                    <MunicipalitiesProvider>
-                        <MunicipalitiesMap/>
-                    </MunicipalitiesProvider>
+                    <MunicipalitiesMap/>
                 </>
             )
         case 'powiaty':
             return (
                 <>
-                    <CountiesProvider>
-                        <CountiesMap/>
-                    </CountiesProvider>
+                    <CountiesMap/>
                 </>
             );
         case 'województwa':
             return (
                 <>
-                    <VoivodeshipsProvider>
-                        <VoivodeshipsMap/>
-                    </VoivodeshipsProvider>
+                    <VoivodeshipsMap/>
                 </>
             );
         default:
             return (
                 <>
-                    <SenateProvider>
-                            <SenateMap/>
-                    </SenateProvider>
+                    <ElectionMap/>
                 </>
             );
     }

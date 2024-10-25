@@ -1,21 +1,24 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import svgPanZoom from "svg-pan-zoom";
 import evaluatePartyResults from "../../../ts/PartyResults.ts";
-import {MunicipalitiesContext} from "../Contexts/MunicipalitiesContext.tsx";
+//import {MunicipalitiesContext} from "../Contexts/MunicipalitiesContext.tsx";
 import {useOptions} from "../../Contexts/OptionsContext.tsx";
 import SinglePartyEvaluation from "../../../ts/SinglePartyEvaluation.ts";
 import getExtremePartyResults from "../../../ts/MaximumPartyValues.ts";
 import {calculateColor} from "../../../ts/CalculateColor.ts";
+import {ResultsContext} from "../Contexts/ElectionsResultsContext.tsx";
 
 
 const MunicipalitiesMap: React.FC = () => {
-    const municipalitiesResults = useContext(MunicipalitiesContext);
+    const {municipalitiesResults} = useContext(ResultsContext);
     const [activeMunicipality, setActiveMunicipality] = useState<string | null>(null);
     const {mapOption, isSinglePartyEnabled, selectedParty} = useOptions();
     const [loading, setLoading] = useState<boolean>(true);
     const svgRef = useRef<SVGSVGElement>(null);
 
+
     useEffect(()=>{
+        console.log(municipalitiesResults);
         if (svgRef.current && municipalitiesResults) {
             const extremeResults = getExtremePartyResults(municipalitiesResults);
             setLoading(true);

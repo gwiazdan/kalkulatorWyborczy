@@ -1,14 +1,14 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import svgPanZoom from "svg-pan-zoom";
 import evaluatePartyResults from "../../../ts/PartyResults.ts";
-import {VoivodeshipsContext} from "../Contexts/VoivodeshipsContext.tsx";
 import {useOptions} from "../../Contexts/OptionsContext.tsx";
 import SinglePartyEvaluation from "../../../ts/SinglePartyEvaluation.ts";
 import getExtremePartyResults from "../../../ts/MaximumPartyValues.ts";
 import {calculateColor} from "../../../ts/CalculateColor.ts";
+import {ResultsContext} from "../Contexts/ElectionsResultsContext.tsx";
 
 const VoivodeshipsMap: React.FC = () => {
-    const voivodeshipsResults = useContext(VoivodeshipsContext);
+    const {voivodeshipsResults} = useContext(ResultsContext);
     const [activeVoivodeship, setActiveVoivodeship] = useState<string | null>(null);
     const {mapOption, isSinglePartyEnabled, selectedParty} = useOptions();
     const [loading, setLoading] = useState<boolean>(true);

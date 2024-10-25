@@ -1,105 +1,105 @@
-import React, {createContext, ReactNode, useState} from "react";
-import PartyResults from "../../../interfaces/PartyResults";
-import SenateResults from "../../../interfaces/SenateResults";
+import React, {createContext, ReactNode, useEffect, useState} from "react";
+import PartyResults from "../../../interfaces/PartyResults.ts";
+import SenateResults from "../../../interfaces/SenateResults.ts";
+import {
+    getAllCountiesResults,
+    getAllEuroResults,
+    getAllMunicipalitiesResults,
+    getAllSejmikResults,
+    getAllSejmResults,
+    getAllSenateResults,
+    getAllVoivodeshipsResults
+} from "../../../services/db.ts";
 
-interface ElectionResults {
+
+interface ResultsContextType {
     countiesResults: PartyResults[] | null;
     municipalitiesResults: PartyResults[] | null;
     senateResults: SenateResults[] | null;
+    sejmResults: PartyResults[] | null;
+    sejmikResults: PartyResults[] | null;
+    euroResults: PartyResults[] | null;
     voivodeshipsResults: PartyResults[] | null;
     loading: boolean;
-    fetchCounties: () => Promise<void>;
-    fetchMunicipalities: () => Promise<void>;
-    fetchSenate: () => Promise<void>;
-    fetchVoivodeships: () => Promise<void>;
 }
 
-export const ElectionResultsContext = createContext<ElectionResults | undefined>(undefined);
+export const ResultsContext = createContext<ResultsContextType>({
+    countiesResults: null,
+    municipalitiesResults: null,
+    senateResults: null,
+    sejmResults: null,
+    sejmikResults: null,
+    euroResults: null,
+    voivodeshipsResults: null,
+    loading: true
+});
 
-interface ElectionResultsProviderProps {
+interface SenateProviderProps {
     children: ReactNode;
 }
 
-export const ElectionResultsProvider: React.FC<ElectionResultsProviderProps> = ({children}) => {
+export const ElectionResultsProvider: React.FC<SenateProviderProps> = ({children}) => {
     const [countiesResults, setCountiesResults] = useState<PartyResults[] | null>(null);
     const [municipalitiesResults, setMunicipalitiesResults] = useState<PartyResults[] | null>(null);
     const [senateResults, setSenateResults] = useState<SenateResults[] | null>(null);
+    const [sejmResults, setSejmResults] = useState<PartyResults[] | null>(null);
+    const [sejmikResults, setSejmikResults] = useState<PartyResults[] | null>(null);
+    const [euroResults, setEuroResults] = useState<PartyResults[] | null>(null);
     const [voivodeshipsResults, setVoivodeshipsResults] = useState<PartyResults[] | null>(null);
     const [loading, setLoading] = useState(true);
 
-    const fetchCounties = async () => {
-        setLoading(true);
-        try {
-            const response = await fetch("http://localhost:8081/api/counties");
-            const result = await response.json();
-            setCountiesResults(result);
-        } catch (error) {
-            console.error("Błąd podczas pobierania danych:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                const municipalitiesResults = await getAllMunicipalitiesResults();
+                setMunicipalitiesResults(municipalitiesResults);
 
-    const fetchMunicipalities = async () => {
-        setLoading(true);
-        try {
-            const response = await fetch("http://localhost:8081/api/municipalities");
-            const result = await response.json();
-            setMunicipalitiesResults(result);
-        } catch (error) {
-            console.error("Błąd podczas pobierania danych:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+                const countiesResults = await getAllCountiesResults();
+                setCountiesResults(countiesResults);
 
-    const fetchSenate = async () => {
-        setLoading(true);
-        try {
-            const response = await fetch("http://localhost:8081/api/senate");
-            const result = await response.json();
-            setSenateResults(result);
-        } catch (error) {
-            console.error("Błąd podczas pobierania danych:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+                const voivodeshipsResults = await getAllVoivodeshipsResults();
+                setVoivodeshipsResults(voivodeshipsResults);
 
-    const fetchVoivodeships = async () => {
-        setLoading(true);
-        try {
-            const response = await fetch("http://localhost:8081/api/voivodeships");
-            const result = await response.json();
-            setVoivodeshipsResults(result);
-        } catch (error) {
-            console.error("Błąd podczas pobierania danych:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+                const senateResults = await getAllSenateResults();
+                setSenateResults(senateResults);
+
+                const sejmResults = await getAllSejmResults();
+                setSejmResults(sejmResults);
+
+                const sejmikResults = await getAllSejmikResults()
+                setSejmikResults(sejmikResults);
+
+                const euroResults = await getAllEuroResults()
+                setEuroResults(euroResults);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    if (loading) return (
+        <div>
+            Ładowanie!
+        </div>
+    )
 
     return (
-        <ElectionResultsContext.Provider value={{
+        <ResultsContext.Provider value={{
             countiesResults,
             municipalitiesResults,
             senateResults,
             voivodeshipsResults,
             loading,
-            fetchCounties,
-            fetchMunicipalities,
-            fetchSenate,
-            fetchVoivodeships,
+            sejmResults,
+            sejmikResults,
+            euroResults
         }}>
             {children}
-        </ElectionResultsContext.Provider>
-    );
-};
-
-export const useElectionResultsContext = () => {
-    const context = React.useContext(ElectionResultsContext);
-    if (!context) {
-        throw new Error("useElectionResultsContext must be used within an ElectionResultsProvider");
-    }
-    return context;
+        </ResultsContext.Provider>
+    )
 };

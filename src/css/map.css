@@ -30,12 +30,12 @@
     filter: drop-shadow(15px 15px 15px #000000);
 }
 .powiat,
-.okregSenacki {
+.okreg {
     stroke-width: 1.5;
     stroke: #000;
 }
 .powiat:hover,
-.okregSenacki:hover {
+.okreg:hover {
     cursor: pointer;
     transition: all 0.25s ease-out;
     filter: drop-shadow(15px 15px 15px #000000);
@@ -97,15 +97,18 @@
     -webkit-filter: brightness(125%);
     filter: brightness(125%);
 }
-.okregSenacki.tossup:hover {
+
+.okreg.tossup:hover {
     -webkit-filter: brightness(200%) drop-shadow(15px 15px 15px #000000);
     filter: brightness(200%) drop-shadow(15px 15px 15px #000000);
 }
-.okregSenacki.leaning:hover {
+
+.okreg.leaning:hover {
      -webkit-filter: brightness(150%) drop-shadow(15px 15px 15px #000000);
      filter: brightness(150%) drop-shadow(15px 15px 15px #000000);
  }
-.okregSenacki.likely:hover {
+
+.okreg.likely:hover {
     -webkit-filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
     filter: brightness(125%) drop-shadow(15px 15px 15px #000000);
 }
