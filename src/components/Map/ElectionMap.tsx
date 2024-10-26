@@ -14,7 +14,7 @@ export const ElectionMap = () => {
         case ElectionsOption.Senat: {
             return (<><SenateMap/></>);
         }
-        case ElectionsOption.Sejmik: {
+        case ElectionsOption.Sejmiki: {
             return (<><SejmikMap/></>);
         }
         default:

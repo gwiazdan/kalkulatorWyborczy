@@ -25,8 +25,8 @@ export const ElectionsSwitch: React.FC = () => {
                            className="cursor-pointer w-1/4 flex items-center justify-center truncate uppercase select-none font-semibold text-lg rounded-full py-2">Senat</label>
 
                     <input type="radio" id="option2" name="tabs" className="appearance-none"
-                           checked={electionsOption === ElectionsOption.Sejmik} onChange={handleOptionChange}
-                           value={ElectionsOption.Sejmik}/>
+                           checked={electionsOption === ElectionsOption.Sejmiki} onChange={handleOptionChange}
+                           value={ElectionsOption.Sejmiki}/>
                     <label htmlFor="option2"
                            className="cursor-pointer w-1/4 flex items-center justify-center truncate uppercase select-none font-semibold text-lg rounded-full py-2">Sejmik</label>
 

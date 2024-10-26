@@ -6,17 +6,10 @@ import SinglePartyEvaluation from "../../../ts/SinglePartyEvaluation.ts";
 import getExtremePartyResults from "../../../ts/MaximumPartyValues.ts";
 import {calculateColor} from "../../../ts/CalculateColor.ts";
 import {ResultsContext} from "../Contexts/ElectionsResultsContext.tsx";
-import {FormContext} from "../../Contexts/FormContext.tsx";
 
 
 const MunicipalitiesMap: React.FC = () => {
     const {municipalitiesResults} = useContext(ResultsContext);
-    const context = useContext(FormContext);
-
-    if (!context) {
-        throw new Error("Forms must be used within a FormProvider");
-    }
-    const {results, multiplyPartyResults, multiplyExtremePartyResults} = context;
     const [activeMunicipality, setActiveMunicipality] = useState<string | null>(null);
     const {mapOption, isSinglePartyEnabled, selectedParty} = useOptions();
     const [loading, setLoading] = useState<boolean>(true);
@@ -33,18 +26,17 @@ const MunicipalitiesMap: React.FC = () => {
                 removeClasses(path);
                 removePathColor(path);
                 const id = path.getAttribute('id');
-                let municipalityResult = municipalitiesResults.find(result => result.id.toString() === id);
+                const municipalityResult = municipalitiesResults.find(result => result.id.toString() === id);
                 if (id === activeMunicipality) {
                     path.classList.add('selected');
                 }
                 if (municipalityResult) {
-                    municipalityResult = multiplyPartyResults(municipalityResult);
                     if(!(isSinglePartyEnabled && selectedParty)){
                         const evaluation = evaluatePartyResults({results: municipalityResult, state: mapOption});
                         const color = calculateColor({
                             selectedParty: evaluation.topParty,
                             results: municipalityResult,
-                            extremePartyResults: multiplyExtremePartyResults(extremeResults, municipalityResult)
+                            extremePartyResults: extremeResults
                         }); // Zastąp min i max odpowiednimi wartościami
 
                         // Ustawienie koloru na atrybucie fill
@@ -61,7 +53,7 @@ const MunicipalitiesMap: React.FC = () => {
                             const color = calculateColor({
                                 selectedParty: selectedParty,
                                 results: municipalityResult,
-                                extremePartyResults: multiplyExtremePartyResults(extremeResults, municipalityResult)
+                                extremePartyResults: extremeResults
                             }); // Zastąp min i max odpowiednimi wartościami
 
                             // Ustawienie koloru na atrybucie fill
@@ -79,7 +71,7 @@ const MunicipalitiesMap: React.FC = () => {
                 setLoading(false);
             })
         }
-    }, [municipalitiesResults, activeMunicipality, mapOption, isSinglePartyEnabled, selectedParty, results]);
+    }, [municipalitiesResults, activeMunicipality, mapOption, isSinglePartyEnabled, selectedParty]);
     const setPathColor = (path: Element, color: string) => {
         path.setAttribute('fill', color);
     };

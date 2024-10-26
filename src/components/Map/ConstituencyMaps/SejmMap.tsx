@@ -5,16 +5,9 @@ import {MapOption} from "../../Contexts/OptionsContext.tsx";
 import evaluatePartyResults from "../../../ts/PartyResults.ts";
 import {calculateColor} from "../../../ts/CalculateColor.ts";
 import getExtremePartyResults from "../../../ts/MaximumPartyValues.ts";
-import {FormContext} from "../../Contexts/FormContext.tsx";
 
 export const SejmMap = () => {
     const {sejmResults} = useContext(ResultsContext);
-    const context = useContext(FormContext);
-
-    if (!context) {
-        throw new Error("Forms must be used within a FormProvider");
-    }
-    const {results, multiplyPartyResults, multiplyExtremePartyResults} = context;
     const [activeConstituency, setActiveConstituency] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const svgRef = useRef<SVGSVGElement>(null);
@@ -28,12 +21,11 @@ export const SejmMap = () => {
                 removePathColor(path);
                 removeClasses(path);
                 const id = path.getAttribute('id');
-                let constituencyResult = sejmResults.find(result => result.id.toString() === id);
+                const constituencyResult = sejmResults.find(result => result.id.toString() === id);
                 if (id === activeConstituency) {
                     path.classList.add('selected');
                 }
                 if (constituencyResult) {
-                    constituencyResult = multiplyPartyResults(constituencyResult);
                     const evaluation = evaluatePartyResults({
                         results: constituencyResult,
                         state: MapOption.PoparciePartii
@@ -41,7 +33,7 @@ export const SejmMap = () => {
                     const color = calculateColor({
                         selectedParty: evaluation.topParty,
                         results: constituencyResult,
-                        extremePartyResults: multiplyExtremePartyResults(extremeResults, constituencyResult)
+                        extremePartyResults: extremeResults
                     }); // Zastąp min i max odpowiednimi wartościami
 
                     setPathColor(path, color);
@@ -52,7 +44,7 @@ export const SejmMap = () => {
                 setLoading(false);
             })
         }
-    }, [results, activeConstituency]);
+    }, [activeConstituency, sejmResults]);
 
     const setPathColor = (path: Element, color: string) => {
         path.setAttribute('fill', color);

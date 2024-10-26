@@ -10,6 +10,7 @@ export interface Results {
     votesForKONF: number;
     votesForPIS: number;
     votesForBS: number;
+    votesForOthers: number;
 }
 
 interface ElectionsContextType {
@@ -36,6 +37,7 @@ export const FormProvider: React.FC<FormContextProps> = ({children}) => {
         votesForTD: 6.91,
         votesForLEW: 6.3,
         votesForBS: 0.93,
+        votesForOthers: 100 - 37.06 - 36.16 - 12.08 - 6.91 - 6.3 - 0.93
     };
 
     const [results, setResults] = useState<Results>(() => {
@@ -48,12 +50,28 @@ export const FormProvider: React.FC<FormContextProps> = ({children}) => {
     }, [results]);
 
     const multiplyPartyResults = (r: PartyResults) => {
-        const votesForKO = Math.floor((r.votesForKO * results.votesForKO) / initialResults.votesForKO);
-        const votesForLEW = Math.floor((r.votesForLEW * results.votesForLEW) / initialResults.votesForLEW);
-        const votesForTD = Math.floor((r.votesForTD * results.votesForTD) / initialResults.votesForTD);
-        const votesForKONF = Math.floor((r.votesForKONF * results.votesForKONF) / initialResults.votesForKONF);
-        const votesForPIS = Math.floor((r.votesForPIS * results.votesForPIS) / initialResults.votesForPIS);
-        const votesForBS = Math.floor((r.votesForBS * results.votesForBS) / initialResults.votesForBS);
+        let votesForKO = Math.floor((r.votesForKO * results.votesForKO) / initialResults.votesForKO);
+        let votesForLEW = Math.floor((r.votesForLEW * results.votesForLEW) / initialResults.votesForLEW);
+        let votesForTD = Math.floor((r.votesForTD * results.votesForTD) / initialResults.votesForTD);
+        let votesForKONF = Math.floor((r.votesForKONF * results.votesForKONF) / initialResults.votesForKONF);
+        let votesForPIS = Math.floor((r.votesForPIS * results.votesForPIS) / initialResults.votesForPIS);
+        let votesForBS = Math.floor((r.votesForBS * results.votesForBS) / initialResults.votesForBS);
+        let votesForMN = r.votesForMN ? r.votesForMN : 0;
+        const votesForOthers = Math.floor(((r.votesForOpposition - r.votesForPIS - r.votesForKONF - r.votesForBS - votesForMN) * results.votesForOthers) / initialResults.votesForOthers);
+
+
+        const sum = votesForKONF + votesForLEW + votesForTD + votesForKO + votesForBS + votesForPIS + votesForOthers + votesForMN;
+
+        if (sum > r.numberOfVotes) {
+            const coefficient = r.numberOfVotes / sum;
+            votesForKO *= coefficient;
+            votesForLEW *= coefficient;
+            votesForTD *= coefficient;
+            votesForKONF *= coefficient;
+            votesForPIS *= coefficient;
+            votesForBS *= coefficient;
+            votesForMN *= coefficient;
+        }
 
         const votesForGovernment = votesForKO + votesForTD + votesForLEW;
         const votesForOpposition = r.numberOfVotes - votesForGovernment;
@@ -68,7 +86,7 @@ export const FormProvider: React.FC<FormContextProps> = ({children}) => {
             votesForKONF,
             votesForPIS,
             votesForBS,
-            votesForMN: r.votesForMN, // Zakładam, że chcesz zachować wartość r.votesForMN
+            votesForMN,
             votesForGovernment,
             votesForOpposition
         };
@@ -81,6 +99,7 @@ export const FormProvider: React.FC<FormContextProps> = ({children}) => {
         const votesForKONF = Math.floor((r.votesForKONF * results.votesForKONF) / initialResults.votesForKONF);
         const votesForPIS = Math.floor((r.votesForPIS * results.votesForPIS) / initialResults.votesForPIS);
         const votesForBS = Math.floor((r.votesForBS * results.votesForBS) / initialResults.votesForBS);
+
 
         const votesForSenatePact = votesForKO + votesForTD + votesForLEW;
         const votesForRightWingPact = votesForKONF + votesForPIS;

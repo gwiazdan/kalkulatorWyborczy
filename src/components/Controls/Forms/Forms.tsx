@@ -13,7 +13,11 @@ export const Forms: React.FC = () => {
 
     const handlePopularityChange = (party: keyof Results, newPopularity: number) => {
         setResults((prevResults: Results) => {
-            const newResults = {...prevResults, [party]: newPopularity};
+            const newResults = {
+                ...prevResults,
+                [party]: newPopularity,
+                votesForOthers: prevResults.votesForOthers - newPopularity + prevResults[party]
+            };
 
             const total: number = Object.values(newResults).reduce((sum: number, value: number) => sum + value, 0);
 

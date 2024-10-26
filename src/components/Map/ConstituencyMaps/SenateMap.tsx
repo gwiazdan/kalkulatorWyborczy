@@ -3,17 +3,9 @@ import svgPanZoom from "svg-pan-zoom";
 import evaluateSenateResults from "../../../ts/SenateResults.ts";
 import {useOptions} from "../../Contexts/OptionsContext.tsx";
 import {ResultsContext} from "../Contexts/ElectionsResultsContext.tsx";
-import {FormContext} from "../../Contexts/FormContext.tsx";
-
 
 const SenateMap: React.FC = () => {
     const {senateResults} = useContext(ResultsContext);
-    const context = useContext(FormContext);
-
-    if (!context) {
-        throw new Error("Forms must be used within a FormProvider");
-    }
-    const {results, multiplySenateResults} = context;
     const {senateOption} = useOptions();
     const [activeConstituency, setActiveConstituency] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -26,12 +18,11 @@ const SenateMap: React.FC = () => {
             paths.forEach(path => {
                 removeClasses(path);
                 const id = path.getAttribute('id');
-                let constituencyResult = senateResults.find(result => result.id.toString() === id);
+                const constituencyResult = senateResults.find(result => result.id.toString() === id);
                 if (id === activeConstituency) {
                     path.classList.add('selected');
                 }
                 if (constituencyResult) {
-                    constituencyResult = multiplySenateResults(constituencyResult);
                     const evaluation = evaluateSenateResults({results: constituencyResult, state: senateOption});
                     switch (evaluation.topParty) {
                         case 'PIS':
@@ -80,7 +71,7 @@ const SenateMap: React.FC = () => {
                 setLoading(false);
             })
         }
-    }, [results, activeConstituency, senateOption]);
+    }, [activeConstituency, senateOption, senateResults]);
 
     const removeClasses = (path: Element) => {
         path.classList.remove('tossup');

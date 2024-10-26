@@ -41,6 +41,6 @@ export const useElectionsContext = () => {
 export enum ElectionsOption {
     Sejm = 'sejm',
     Senat = 'senat',
-    Sejmik = 'sejmik',
+    Sejmiki = 'sejmiki',
     Europarlament = 'europarlament'
 }

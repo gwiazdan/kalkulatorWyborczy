@@ -6,16 +6,9 @@ import SinglePartyEvaluation from "../../../ts/SinglePartyEvaluation.ts";
 import getExtremePartyResults from "../../../ts/MaximumPartyValues.ts";
 import {calculateColor} from "../../../ts/CalculateColor.ts";
 import {ResultsContext} from "../Contexts/ElectionsResultsContext.tsx";
-import {FormContext} from "../../Contexts/FormContext.tsx";
 
 const VoivodeshipsMap: React.FC = () => {
     const {voivodeshipsResults} = useContext(ResultsContext);
-    const context = useContext(FormContext);
-
-    if (!context) {
-        throw new Error("Forms must be used within a FormProvider");
-    }
-    const {results, multiplyPartyResults, multiplyExtremePartyResults} = context;
     const [activeVoivodeship, setActiveVoivodeship] = useState<string | null>(null);
     const {mapOption, isSinglePartyEnabled, selectedParty} = useOptions();
     const [loading, setLoading] = useState<boolean>(true);
@@ -30,18 +23,17 @@ const VoivodeshipsMap: React.FC = () => {
                 removePathColor(path);
                 removeClasses(path);
                 const id = path.getAttribute('id');
-                let voivodeshipResults = voivodeshipsResults.find(result => result.id.toString() === id);
+                const voivodeshipResults = voivodeshipsResults.find(result => result.id.toString() === id);
                 if (id === activeVoivodeship) {
                     path.classList.add('selected');
                 }
                 if (voivodeshipResults) {
-                    voivodeshipResults = multiplyPartyResults(voivodeshipResults);
                     if(!(isSinglePartyEnabled && selectedParty)) {
                         const evaluation = evaluatePartyResults({results: voivodeshipResults, state: mapOption});
                         const color = calculateColor({
                             selectedParty: evaluation.topParty,
                             results: voivodeshipResults,
-                            extremePartyResults: multiplyExtremePartyResults(extremeResults, voivodeshipResults)
+                            extremePartyResults: extremeResults
                         }); // Zastąp min i max odpowiednimi wartościami
 
                         setPathColor(path, color);
@@ -58,7 +50,7 @@ const VoivodeshipsMap: React.FC = () => {
                             const color = calculateColor({
                                 selectedParty: selectedParty,
                                 results: voivodeshipResults,
-                                extremePartyResults: multiplyExtremePartyResults(extremeResults, voivodeshipResults)
+                                extremePartyResults: extremeResults
                             }); // Zastąp min i max odpowiednimi wartościami
 
                             // Ustawienie koloru na atrybucie fill
@@ -75,7 +67,7 @@ const VoivodeshipsMap: React.FC = () => {
                 setLoading(false);
             })
         }
-    }, [voivodeshipsResults, activeVoivodeship, mapOption, isSinglePartyEnabled, selectedParty, results]);
+    }, [voivodeshipsResults, activeVoivodeship, mapOption, isSinglePartyEnabled, selectedParty]);
     const setPathColor = (path: Element, color: string) => {
         path.setAttribute('fill', color);
     };

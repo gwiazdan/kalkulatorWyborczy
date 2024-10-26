@@ -3,13 +3,11 @@ import MunicipalitiesMap from "./AdministrativeMaps/MunicipalitiesMap.tsx";
 import CountiesMap from './AdministrativeMaps/CountiesMap.tsx';
 import VoivodeshipsMap from "./AdministrativeMaps/VoivodeshipsMap.tsx";
 import {ElectionMap} from "./ElectionMap.tsx";
+import {useCurrentMapContext} from "./Contexts/CurrentMapContext.tsx";
 
 
-interface MapSwitcherProps {
-    currentState: string;
-}
-
-const MapSwitcher: React.FC<MapSwitcherProps> = ({currentState}) => {
+const MapSwitcher: React.FC = () => {
+    const {currentState} = useCurrentMapContext();
 
     switch (currentState) {
         case 'gminy':

@@ -4,6 +4,7 @@ import Map from "./components/Map/Map.tsx";
 import {ApiContext} from "./components/Contexts/ApiProvider.tsx";
 import {Controls} from "./components/Controls/Controls.tsx";
 import {AppHeader} from "./components/AppHeader.tsx";
+import {DetailsWindow} from "./components/Details/DetailsWindow.tsx";
 
 function App() {
     const isApiAvailable:boolean = useContext(ApiContext);
@@ -21,8 +22,13 @@ function App() {
                     <Map/>
                 </div>
             </div>
-            <div>
-                123
+            <div className="flex lg:flex-row flex-col lg:flex-rows-1">
+                <div className="flex basis-1/2 h-full">
+                    <DetailsWindow/>
+                </div>
+                <div className="p-4">
+                    1234
+                </div>
             </div>
 
         </>

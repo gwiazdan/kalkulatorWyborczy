@@ -9,7 +9,7 @@ const Options : React.FC = () => {
     return (
         <>
             <div>
-                <div className="py-5 px-5 mx-auto bg-slate-800">
+                <div className="py-5 px-5 mx-auto bg-slate-800 mt-6">
                     <details className="group">
                         <summary className="flex justify-between items-center font-bold tracking-wider cursor-pointer list-none">
                             <span>Ustawienia kalkulatora</span>
