@@ -12,8 +12,8 @@ function App() {
     return (
         <>
             <AppHeader/>
-            <div className="flex lg:flex-row flex-col lg:flex-rows-1">
-                <div className="flex basis-1/2">
+            <div className="flex lg:flex-row flex-col lg:flex-rows-1 ">
+                <div className="flex basis-1/2 h-full min-h-screen">
                     <Controls/>
                 </div>
                 <div className="flex flex-col lg:aspect-square map justify-center p-4 lg:h-auto flex-grow space-y-2"

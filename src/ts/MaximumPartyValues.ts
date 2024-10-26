@@ -1,5 +1,6 @@
 import PartyResults from "../interfaces/PartyResults.ts";
 
+
 export interface ExtremePartyResults {
     MaxKO: number;
     MinKO: number;
@@ -22,6 +23,7 @@ export interface ExtremePartyResults {
 }
 
 export default function getExtremePartyResults(results: PartyResults[]): ExtremePartyResults {
+
     const maxMinResults= {
         MaxKO: -Infinity, MinKO: Infinity,
         MaxPIS: -Infinity, MinPIS: Infinity,

@@ -6,10 +6,17 @@ import SinglePartyEvaluation from "../../../ts/SinglePartyEvaluation.ts";
 import {calculateColor} from "../../../ts/CalculateColor.ts";
 import getExtremePartyResults from "../../../ts/MaximumPartyValues.ts";
 import {ResultsContext} from "../Contexts/ElectionsResultsContext.tsx";
+import {FormContext} from "../../Contexts/FormContext.tsx";
 
 
 const CountiesMap: React.FC = () => {
     const {countiesResults} = useContext(ResultsContext);
+    const context = useContext(FormContext);
+
+    if (!context) {
+        throw new Error("Forms must be used within a FormProvider");
+    }
+    const {results, multiplyPartyResults, multiplyExtremePartyResults} = context;
     const {mapOption, isSinglePartyEnabled, selectedParty} = useOptions();
     const [activeCounty, setActiveCounty] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -24,17 +31,18 @@ const CountiesMap: React.FC = () => {
                 removePathColor(path);
                 removeClasses(path);
                 const id = path.getAttribute('id');
-                const countyResults = countiesResults.find(result => result.id.toString() === id);
+                let countyResults = countiesResults.find(result => result.id.toString() === id);
                 if (id === activeCounty) {
                     path.classList.add('selected');
                 }
                 if (countyResults) {
+                    countyResults = multiplyPartyResults(countyResults);
                     if(!(isSinglePartyEnabled && selectedParty)) {
                         const evaluation = evaluatePartyResults({results: countyResults, state: mapOption});
                         const color = calculateColor({
                             selectedParty: evaluation.topParty,
                             results: countyResults,
-                            extremePartyResults: extremeResults
+                            extremePartyResults: multiplyExtremePartyResults(extremeResults, countyResults)
                         }); // Zastąp min i max odpowiednimi wartościami
 
                         setPathColor(path, color);
@@ -47,7 +55,11 @@ const CountiesMap: React.FC = () => {
                         // Sprawdzanie, czy są głosy
                         if (!evaluation.zeroVotes) {
                             // Obliczanie koloru
-                            const color = calculateColor({selectedParty: selectedParty, results: countyResults, extremePartyResults: extremeResults}); // Zastąp min i max odpowiednimi wartościami
+                            const color = calculateColor({
+                                selectedParty: selectedParty,
+                                results: countyResults,
+                                extremePartyResults: multiplyExtremePartyResults(extremeResults, countyResults)
+                            }); // Zastąp min i max odpowiednimi wartościami
 
                             // Ustawienie koloru na atrybucie fill
                             setPathColor(path, color);
@@ -64,7 +76,7 @@ const CountiesMap: React.FC = () => {
                 setLoading(false);
             })
         }
-    }, [countiesResults, activeCounty, mapOption, isSinglePartyEnabled, selectedParty]);
+    }, [countiesResults, activeCounty, mapOption, isSinglePartyEnabled, selectedParty, results]);
     const setPathColor = (path: Element, color: string) => {
         path.setAttribute('fill', color);
     };

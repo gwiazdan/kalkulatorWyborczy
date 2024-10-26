@@ -5,9 +5,16 @@ import {MapOption} from "../../Contexts/OptionsContext.tsx";
 import evaluatePartyResults from "../../../ts/PartyResults.ts";
 import {calculateColor} from "../../../ts/CalculateColor.ts";
 import getExtremePartyResults from "../../../ts/MaximumPartyValues.ts";
+import {FormContext} from "../../Contexts/FormContext.tsx";
 
 export const SejmikMap = () => {
     const {sejmikResults} = useContext(ResultsContext);
+    const context = useContext(FormContext);
+
+    if (!context) {
+        throw new Error("Forms must be used within a FormProvider");
+    }
+    const {results, multiplyPartyResults, multiplyExtremePartyResults} = context;
     const [activeConstituency, setActiveConstituency] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const svgRef = useRef<SVGSVGElement>(null);
@@ -21,11 +28,12 @@ export const SejmikMap = () => {
                 removePathColor(path);
                 removeClasses(path);
                 const id = path.getAttribute('id');
-                const constituencyResult = sejmikResults.find(result => result.id.toString() === id);
+                let constituencyResult = sejmikResults.find(result => result.id.toString() === id);
                 if (id === activeConstituency) {
                     path.classList.add('selected');
                 }
                 if (constituencyResult) {
+                    constituencyResult = multiplyPartyResults(constituencyResult);
                     const evaluation = evaluatePartyResults({
                         results: constituencyResult,
                         state: MapOption.PoparciePartii
@@ -33,57 +41,17 @@ export const SejmikMap = () => {
                     const color = calculateColor({
                         selectedParty: evaluation.topParty,
                         results: constituencyResult,
-                        extremePartyResults: extremeResults
+                        extremePartyResults: multiplyExtremePartyResults(extremeResults, constituencyResult)
                     }); // Zastąp min i max odpowiednimi wartościami
 
                     setPathColor(path, color);
-                    /*
-                    const evaluation = evaluateTopParty({results: constituencyResult});
-                    switch (evaluation.topParty) {
-                        case PoliticalParty.PrawoISprawiedliwosc:
-                            path.classList.add('pis');
-                            break;
-                        case PoliticalParty.KoalicjaObywatelska:
-                            path.classList.add('ko');
-                            break;
-                        case PoliticalParty.TrzeciaDroga:
-                            path.classList.add('td');
-                            break;
-                        case PoliticalParty.Lewica:
-                            path.classList.add('lew');
-                            break;
-                        case PoliticalParty.Konfederacja:
-                            path.classList.add('konf');
-                            break;
-                        case PoliticalParty.BezpartyjniSamorzadowcy:
-                            path.classList.add('bs');
-                            break;
-                        case PoliticalParty.MniejszoscNiemiecka:
-                            path.classList.add('mn');
-                            break;
-                        case PoliticalParty.PaktSenacki:
-                            path.classList.add('sp');
-                            break;
-                        case PoliticalParty.PaktPrawicy:
-                            path.classList.add('rwp');
-                            break;
-                        default:
-                    }
-                    if (evaluation.below40) {
-                        if (evaluation.below30) {
-                            path.classList.add('bright30');
-                        } else {
-                            path.classList.add('bright40');
-                        }
-                    }
-                    */
                 } else {
                     console.warn(`Brak wyników dla gminy o ID ${id}`);
                 }
                 setLoading(false);
             })
         }
-    }, [sejmikResults, activeConstituency]);
+    }, [results, activeConstituency]);
 
     const setPathColor = (path: Element, color: string) => {
         path.setAttribute('fill', color);
