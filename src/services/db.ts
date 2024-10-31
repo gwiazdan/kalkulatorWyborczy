@@ -35,9 +35,7 @@ async function fetchDataFromAPI(url: string, tableName: keyof ResultsDB) {
             throw new Error('Network response was not ok');
         }
         const data: PartyResults[] = await response.json();
-        console.log(`Fetched data from ${url}:`, data);
         await db.table(tableName).bulkPut(data);
-        console.log(`Data saved to ${tableName} successfully`);
     } catch (error) {
         console.error(`Error fetching data from ${url}:`, error);
     }
@@ -50,9 +48,7 @@ async function fetchSenateDataFromAPI(url: string, tableName: keyof ResultsDB) {
             throw new Error('Network response was not ok');
         }
         const data: SenateResults[] = await response.json();
-        console.log(`Fetched data from ${url}:`, data);
         await db.table(tableName).bulkPut(data);
-        console.log(`Data saved to ${tableName} successfully`);
     } catch (error) {
         console.error(`Error fetching data from ${url}:`, error);
     }

@@ -10,7 +10,7 @@ export const ElectionsSwitch: React.FC = () => {
 
     return (
         <>
-            <div className="p-8 flex flex-row items-center">
+            <div className="p-6 flex flex-row items-center">
                 <div className="flex w-full relative">
                     <input type="radio" id="option0" name="tabs" className="appearance-none"
                            checked={electionsOption === ElectionsOption.Sejm} onChange={handleOptionChange}

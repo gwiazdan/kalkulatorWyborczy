@@ -16,15 +16,18 @@ export const Forms: React.FC = () => {
             const newResults = {
                 ...prevResults,
                 [party]: newPopularity,
-                votesForOthers: prevResults.votesForOthers - newPopularity + prevResults[party]
+            };
+            const sumExcludingOthers = Object.entries(newResults)
+                .filter(([key]) => key !== "votesForOthers")
+                .reduce((sum, [_, value]) => sum + value, 0);
+
+            if (sumExcludingOthers > 100) {
+                console.warn("Suma głosów przekracza 100%");
+                return prevResults;
             };
 
-            const total: number = Object.values(newResults).reduce((sum: number, value: number) => sum + value, 0);
-
-            if (total > 100) {
-                return prevResults;
-            }
-
+            const votesForOthers = 100 - sumExcludingOthers;
+            newResults.votesForOthers = votesForOthers;
             return newResults;
         });
     };

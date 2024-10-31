@@ -6,7 +6,7 @@ import {ElectionsSwitch} from "./ElectionsSwitch.tsx";
 export const Controls: React.FC = () => {
     return (
         <>
-            <div className="flex flex-col w-full justify-items-center">
+            <div className="relative flex flex-col w-full justify-between">
                 <ElectionsSwitch/>
                 <Forms/>
                 <Options/>
