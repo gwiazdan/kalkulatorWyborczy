@@ -96,7 +96,7 @@ export const getMunicipalities = async (): Promise<PartyResults[]> => {
 };
 
 let importedMunicipalities: Municipality[] = [];
-fetch('./Municipalities.json')
+fetch('../public/Municipalities.json')
     .then(res => res.json())
     .then(data => importedMunicipalities = data);
 
@@ -104,7 +104,7 @@ fetch('./Municipalities.json')
 
 const counties = async():Promise<CountyWithVotes[]> => {
     let importedCounties: County[] = [];
-    fetch('./Counties.json')
+    fetch('../public/Counties.json')
         .then(res => res.json())
         .then(data => importedCounties = data);
 
@@ -158,7 +158,7 @@ export const getCounties = async (): Promise<PartyResults[]> => {
 
 export const getVoivodeships = async(): Promise<PartyResults[]> => {
     let importedVoivodeships: Voivodeship[] = [];
-    fetch('./Voivodeships.json')
+    fetch('../public/Voivodeships.json')
         .then(res => res.json())
         .then(data => importedVoivodeships = data);
     const importedCounties = await counties();
@@ -207,14 +207,14 @@ export const getVoivodeships = async(): Promise<PartyResults[]> => {
 };
 
 let importedTerritory: Territory[] = [];
-fetch('./Territories.json')
+    fetch('../public/Territories.json')
     .then(res => res.json())
     .then(data => importedTerritory = data);
 
 
 export const getSejmResults = async (): Promise<PartyResults[]> => {
     let importedSejm: Sejm[] = [];
-    fetch('./Sejm.json')
+    fetch('../public/Sejm.json')
         .then(res => res.json())
         .then(data => importedSejm = data);
     const sejmWithVotes: SejmWithVotes[] = importedSejm.map(sejm => ({
@@ -276,7 +276,7 @@ export const getSejmResults = async (): Promise<PartyResults[]> => {
 
 export const getSenateResults = async (): Promise<SenateResults[]> => {
     let importedSenate: Voivodeship[] = [];
-    fetch('./Senate.json')
+    fetch('../public/Senate.json')
         .then(res => res.json())
         .then(data => importedSenate = data);
     const senateWithVotes: VoivodeshipWithVotes[] = importedSenate.map(senate => ({
@@ -338,7 +338,7 @@ export const getSenateResults = async (): Promise<SenateResults[]> => {
 
 export const getEuroResults = async (): Promise<PartyResults[]> => {
     let importedEuro: Voivodeship[] = [];
-    fetch('./European_Parliament.json')
+    fetch('../public/European_Parliament.json')
         .then(res => res.json())
         .then(data => importedEuro = data);
     const euroWithVotes: VoivodeshipWithVotes[] = importedEuro.map(euro => ({
@@ -400,7 +400,7 @@ export const getEuroResults = async (): Promise<PartyResults[]> => {
 
 export const getSejmikResults = async (): Promise<PartyResults[]> => {
     let importedSejmiki: Sejmik[] = [];
-    fetch('./Sejmiki.json')
+    fetch('../public/Sejmiki.json')
         .then(res => res.json())
         .then(data => importedSejmiki = data);
     const sejmikWithVotes: SejmikWithVotes[] = importedSejmiki.map(sejmik => ({
