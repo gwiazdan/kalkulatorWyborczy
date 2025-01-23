@@ -7,8 +7,8 @@ export default defineConfig({
   plugins: [react()],
   build: {
   target: 'esnext',
-  base: '/kalkulatorWyborczy/',
   },
+  base: '/kalkulatorWyborczy/',
   css: {
     postcss: {
       plugins: [tailwindcss()],
