@@ -1,6 +1,7 @@
 import Dexie from 'dexie';
 import PartyResults from "../interfaces/PartyResults";
 import SenateResults from '../interfaces/SenateResults';
+import {getMunicipalities, getCounties, getVoivodeships, getSejmResults, getSenateResults, getEuroResults, getSejmikResults} from "../db/DatabaseManager.ts";
 
 class ResultsDB extends Dexie {
     municipalitiesResults!: Dexie.Table<PartyResults, number>;
@@ -28,41 +29,26 @@ class ResultsDB extends Dexie {
 const db = new ResultsDB();
 
 // Funkcja do pobierania danych z API
-async function fetchDataFromAPI(url: string, tableName: keyof ResultsDB) {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const data: PartyResults[] = await response.json();
-        await db.table(tableName).bulkPut(data);
-    } catch (error) {
-        console.error(`Error fetching data from ${url}:`, error);
-    }
+async function fetchDataFromAPI(func: Promise<PartyResults[]>, tableName: keyof ResultsDB) {
+    const data: PartyResults[] = await func;
+    await db.table(tableName).bulkPut(data);
+
 }
 
-async function fetchSenateDataFromAPI(url: string, tableName: keyof ResultsDB) {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const data: SenateResults[] = await response.json();
-        await db.table(tableName).bulkPut(data);
-    } catch (error) {
-        console.error(`Error fetching data from ${url}:`, error);
-    }
+async function fetchSenateDataFromAPI(func: Promise<SenateResults[]>, tableName: keyof ResultsDB) {
+    const data: SenateResults[] = await func;
+    await db.table(tableName).bulkPut(data);
 }
 
 // Funkcja do pobierania wszystkich danych
 export async function fetchAllData() {
-    await fetchDataFromAPI("http://localhost:8081/api/municipalities", "municipalitiesResults");
-    await fetchDataFromAPI("http://localhost:8081/api/counties", "countiesResults");
-    await fetchDataFromAPI("http://localhost:8081/api/voivodeships", "voivodeshipsResults");
-    await fetchSenateDataFromAPI("http://localhost:8081/api/senate", "senateResults");
-    await fetchDataFromAPI("http://localhost:8081/api/sejm", "sejmResults");
-    await fetchDataFromAPI("http://localhost:8081/api/sejmik", "sejmikResults");
-    await fetchDataFromAPI("http://localhost:8081/api/euro", "euroResults");
+    await fetchDataFromAPI(getMunicipalities(), "municipalitiesResults");
+    await fetchDataFromAPI(getCounties(), "countiesResults");
+    await fetchDataFromAPI(getVoivodeships(), "voivodeshipsResults");
+    await fetchSenateDataFromAPI(getSenateResults(), "senateResults");
+    await fetchDataFromAPI(getSejmResults(), "sejmResults");
+    await fetchDataFromAPI(getSejmikResults(), "sejmikResults");
+    await fetchDataFromAPI(getEuroResults(), "euroResults");
 
 }
 
