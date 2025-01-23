@@ -16,7 +16,7 @@ const SelectedTerritoryContext = createContext<SelectedContextProps | undefined>
 export const SelectedTerritoryProvider: React.FC<SelectedTerritoryProviderProps> = ({children}) => {
     const [partyResults, setPartyResults] = useState<PartyResults | undefined>(()=>{
         const savedOption = sessionStorage.getItem('selectedPartyResults');
-        return savedOption ? JSON.parse(partyResults) : undefined;
+        return savedOption ? (JSON.parse(savedOption) as PartyResults) : undefined;
     });
 
     useEffect(()=>{
