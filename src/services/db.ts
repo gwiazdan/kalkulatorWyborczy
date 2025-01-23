@@ -1,7 +1,7 @@
 import Dexie from 'dexie';
 import PartyResults from "../interfaces/PartyResults";
 import SenateResults from '../interfaces/SenateResults';
-import {getMunicipalities, getCounties, getVoivodeships, getSejmResults, getSenateResults, getEuroResults, getSejmikResults} from "../db/DatabaseManager.ts";
+import {getMunicipalities, getCounties, getVoivodeships, getSejmResults, getSenateResults, getEuroResults, getSejmikResults} from "./DatabaseManager.ts";
 
 class ResultsDB extends Dexie {
     municipalitiesResults!: Dexie.Table<PartyResults, number>;
@@ -18,7 +18,7 @@ class ResultsDB extends Dexie {
             municipalitiesResults: "id, name, numberOfVotes, votesForKO, votesForLEW, votesForTD, votesForKONF, votesForPIS, votesForBS, votesForMN, votesForGovernment, votesForOpposition",
             countiesResults: "id, name, numberOfVotes, votesForKO, votesForLEW, votesForTD, votesForKONF, votesForPIS, votesForBS, votesForMN, votesForGovernment, votesForOpposition",
             voivodeshipsResults: "id, name, numberOfVotes, votesForKO, votesForLEW, votesForTD, votesForKONF, votesForPIS, votesForBS, votesForMN, votesForGovernment, votesForOpposition",
-            senateResults: "id, name, numberOfVotes, votesForKO, votesForPIS, votesForKONF, votesForTD, votesForLEW, votesForBS, votesForMN, votesForRigthWingPact, votesForSenatePact",
+            senateResults: "id, name, numberOfVotes, votesForKO, votesForPIS, votesForKONF, votesForTD, votesForLEW, votesForBS, votesForMN, votesForRightWingPact, votesForSenatePact",
             sejmResults: "id, name, numberOfVotes, votesForKO, votesForLEW, votesForTD, votesForKONF, votesForPIS, votesForBS, votesForMN, votesForGovernment, votesForOpposition",
             sejmikResults: "id, name, numberOfVotes, votesForKO, votesForLEW, votesForTD, votesForKONF, votesForPIS, votesForBS, votesForMN, votesForGovernment, votesForOpposition",
             euroResults: "id, name, numberOfVotes, votesForKO, votesForLEW, votesForTD, votesForKONF, votesForPIS, votesForBS, votesForMN, votesForGovernment, votesForOpposition",
