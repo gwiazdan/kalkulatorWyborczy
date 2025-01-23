@@ -1,4 +1,5 @@
 import PartyResults from "../interfaces/PartyResults.ts";
+import SenateResults from "../interfaces/SenateResults.ts";
 
 interface Municipality {
     id: number;
@@ -24,9 +25,33 @@ interface County {
     europarlamentID: number;
 }
 
+interface Territory {
+    id: number;
+    name: string;
+    senateID: number | null;
+    sejmID: number | null;
+    sejmikID: number | null;
+    europarlamentID: number | null;
+    numberOfVotes: number;
+    votesForKO: number;
+    votesForPIS: number;
+    votesForKONF: number;
+    votesForTD: number;
+    votesForLEW: number;
+    votesForBS: number;
+}
+
 interface Voivodeship {
     id: number;
     name: string;
+}
+
+interface Sejmik {
+    id: number;
+    name: string;
+    voivodeshipID: number;
+    number: number;
+    seats: number;
 }
 
 interface WithVotes {
@@ -40,8 +65,16 @@ interface WithVotes {
     votesForMN: number;
 }
 
+interface Sejm {
+    id: number;
+    name: string;
+    seats: number;
+}
+
 interface CountyWithVotes extends County, WithVotes {}
 interface VoivodeshipWithVotes extends Voivodeship, WithVotes {}
+interface SejmWithVotes extends Sejm, WithVotes {}
+interface SejmikWithVotes extends Sejmik, WithVotes {}
 
 export const getMunicipalities = async (): Promise<PartyResults[]> => {
     return importedMunicipalities.map(municipality => {
@@ -164,5 +197,241 @@ export const getVoivodeships = async(): Promise<PartyResults[]> => {
     });
 };
 
-const v = await getVoivodeships();
-console.log(v);
+const importedTerritory: Territory[] = (await import('./Territories.json')).default;
+
+
+export const getSejmResults = async (): Promise<PartyResults[]> => {
+    const importedSejm: Sejm[] = (await import('./Sejm.json')).default;
+    const sejmWithVotes: SejmWithVotes[] = importedSejm.map(sejm => ({
+        ...sejm,
+        numberOfVotes: 0,
+        votesForKO: 0,
+        votesForPIS: 0,
+        votesForKONF: 0,
+        votesForTD: 0,
+        votesForLEW: 0,
+        votesForBS: 0,
+        votesForMN: 0,
+    }));
+
+    importedTerritory.forEach(territory => {
+        const constituency = sejmWithVotes.find(s => s.id === territory.sejmID);
+        if(constituency){
+            constituency.votesForKO += territory.votesForKO;
+            constituency.votesForPIS += territory.votesForPIS;
+            constituency.votesForKONF += territory.votesForKONF;
+            constituency.votesForTD += territory.votesForTD;
+            constituency.votesForLEW += territory.votesForLEW;
+            constituency.votesForBS += territory.votesForBS;
+            constituency.numberOfVotes += territory.numberOfVotes;
+        }
+    })
+    const countiesResults = await counties();
+    countiesResults.forEach(county=> {
+        const constituency = sejmWithVotes.find(s => s.id === county.sejmID);
+        if(constituency){
+            constituency.numberOfVotes += county.numberOfVotes;
+            constituency.votesForKO += county.votesForKO;
+            constituency.votesForPIS += county.votesForPIS;
+            constituency.votesForKONF += county.votesForKONF;
+            constituency.votesForTD += county.votesForTD;
+            constituency.votesForLEW += county.votesForLEW;
+            constituency.votesForBS += county.votesForBS;
+            constituency.votesForMN += county.votesForMN ? county.votesForMN : 0;
+        }
+    })
+
+    return sejmWithVotes.map(sejm => {
+        return {
+            id: sejm.id,
+            name: sejm.name,
+            numberOfVotes: sejm.numberOfVotes,
+            votesForKO: sejm.votesForKO,
+            votesForLEW: sejm.votesForLEW,
+            votesForTD: sejm.votesForTD,
+            votesForKONF: sejm.votesForKONF,
+            votesForPIS: sejm.votesForPIS,
+            votesForBS: sejm.votesForBS,
+            votesForMN: sejm.votesForMN ? sejm.votesForMN : 0,
+            votesForGovernment: sejm.votesForKO + sejm.votesForLEW + sejm.votesForTD,
+            votesForOpposition: sejm.numberOfVotes - sejm.votesForKO - sejm.votesForLEW - sejm.votesForTD
+        };
+    });
+}
+
+export const getSenateResults = async (): Promise<SenateResults[]> => {
+    const importedSenate: Voivodeship[] = (await import('./Senate.json')).default;
+    const senateWithVotes: VoivodeshipWithVotes[] = importedSenate.map(senate => ({
+        ...senate,
+        numberOfVotes: 0,
+        votesForKO: 0,
+        votesForPIS: 0,
+        votesForKONF: 0,
+        votesForTD: 0,
+        votesForLEW: 0,
+        votesForBS: 0,
+        votesForMN: 0,
+    }));
+
+    importedTerritory.forEach(territory => {
+        const constituency = senateWithVotes.find(s => s.id === territory.senateID);
+        if(constituency){
+            constituency.votesForKO += territory.votesForKO;
+            constituency.votesForPIS += territory.votesForPIS;
+            constituency.votesForKONF += territory.votesForKONF;
+            constituency.votesForTD += territory.votesForTD;
+            constituency.votesForLEW += territory.votesForLEW;
+            constituency.votesForBS += territory.votesForBS;
+            constituency.numberOfVotes += territory.numberOfVotes;
+        }
+    })
+    const countiesResults = await counties();
+    countiesResults.forEach(county=> {
+        const constituency = senateWithVotes.find(s => s.id === county.senateID);
+        if(constituency){
+            constituency.numberOfVotes += county.numberOfVotes;
+            constituency.votesForKO += county.votesForKO;
+            constituency.votesForPIS += county.votesForPIS;
+            constituency.votesForKONF += county.votesForKONF;
+            constituency.votesForTD += county.votesForTD;
+            constituency.votesForLEW += county.votesForLEW;
+            constituency.votesForBS += county.votesForBS;
+            constituency.votesForMN += county.votesForMN ? county.votesForMN : 0;
+        }
+    })
+
+    return senateWithVotes.map(senate => {
+        return {
+            id: senate.id,
+            name: senate.name,
+            numberOfVotes: senate.numberOfVotes,
+            votesForKO: senate.votesForKO,
+            votesForLEW: senate.votesForLEW,
+            votesForTD: senate.votesForTD,
+            votesForKONF: senate.votesForKONF,
+            votesForPIS: senate.votesForPIS,
+            votesForBS: senate.votesForBS,
+            votesForMN: senate.votesForMN ? senate.votesForMN : 0,
+            votesForSenatePact: senate.votesForKO + senate.votesForTD + senate.votesForLEW,
+            votesForRightWingPact: senate.votesForKONF + senate.votesForPIS
+        };
+    });
+}
+
+export const getEuroResults = async (): Promise<PartyResults[]> => {
+    const importedEuro: Voivodeship[] = (await import('./European_Parliament.json')).default;
+    const euroWithVotes: VoivodeshipWithVotes[] = importedEuro.map(euro => ({
+        ...euro,
+        numberOfVotes: 0,
+        votesForKO: 0,
+        votesForPIS: 0,
+        votesForKONF: 0,
+        votesForTD: 0,
+        votesForLEW: 0,
+        votesForBS: 0,
+        votesForMN: 0,
+    }));
+
+    importedTerritory.forEach(territory => {
+        const constituency = euroWithVotes.find(s => s.id === territory.europarlamentID);
+        if(constituency){
+            constituency.votesForKO += territory.votesForKO;
+            constituency.votesForPIS += territory.votesForPIS;
+            constituency.votesForKONF += territory.votesForKONF;
+            constituency.votesForTD += territory.votesForTD;
+            constituency.votesForLEW += territory.votesForLEW;
+            constituency.votesForBS += territory.votesForBS;
+            constituency.numberOfVotes += territory.numberOfVotes;
+        }
+    })
+    const countiesResults = await counties();
+    countiesResults.forEach(county=> {
+        const constituency = euroWithVotes.find(s => s.id === county.europarlamentID);
+        if(constituency){
+            constituency.numberOfVotes += county.numberOfVotes;
+            constituency.votesForKO += county.votesForKO;
+            constituency.votesForPIS += county.votesForPIS;
+            constituency.votesForKONF += county.votesForKONF;
+            constituency.votesForTD += county.votesForTD;
+            constituency.votesForLEW += county.votesForLEW;
+            constituency.votesForBS += county.votesForBS;
+            constituency.votesForMN += county.votesForMN ? county.votesForMN : 0;
+        }
+    })
+
+    return euroWithVotes.map(euro => {
+        return {
+            id: euro.id,
+            name: euro.name,
+            numberOfVotes: euro.numberOfVotes,
+            votesForKO: euro.votesForKO,
+            votesForLEW: euro.votesForLEW,
+            votesForTD: euro.votesForTD,
+            votesForKONF: euro.votesForKONF,
+            votesForPIS: euro.votesForPIS,
+            votesForBS: euro.votesForBS,
+            votesForMN: euro.votesForMN ? euro.votesForMN : 0,
+            votesForGovernment: euro.votesForKO + euro.votesForLEW + euro.votesForTD,
+            votesForOpposition: euro.numberOfVotes - euro.votesForKO - euro.votesForLEW - euro.votesForTD
+        };
+    });
+}
+
+export const getSejmikResults = async (): Promise<PartyResults[]> => {
+    const importedSejmiki: Sejmik[] = (await import('./Sejmiki.json')).default;
+    const sejmikWithVotes: SejmikWithVotes[] = importedSejmiki.map(sejmik => ({
+        ...sejmik,
+        numberOfVotes: 0,
+        votesForKO: 0,
+        votesForPIS: 0,
+        votesForKONF: 0,
+        votesForTD: 0,
+        votesForLEW: 0,
+        votesForBS: 0,
+        votesForMN: 0,
+    }));
+
+    importedTerritory.forEach(territory => {
+        const constituency = sejmikWithVotes.find(s => s.id === territory.sejmikID);
+        if(constituency){
+            constituency.votesForKO += territory.votesForKO;
+            constituency.votesForPIS += territory.votesForPIS;
+            constituency.votesForKONF += territory.votesForKONF;
+            constituency.votesForTD += territory.votesForTD;
+            constituency.votesForLEW += territory.votesForLEW;
+            constituency.votesForBS += territory.votesForBS;
+            constituency.numberOfVotes += territory.numberOfVotes;
+        }
+    })
+    const countiesResults = await counties();
+    countiesResults.forEach(county=> {
+        const constituency = sejmikWithVotes.find(s => s.id === county.sejmikID);
+        if(constituency){
+            constituency.numberOfVotes += county.numberOfVotes;
+            constituency.votesForKO += county.votesForKO;
+            constituency.votesForPIS += county.votesForPIS;
+            constituency.votesForKONF += county.votesForKONF;
+            constituency.votesForTD += county.votesForTD;
+            constituency.votesForLEW += county.votesForLEW;
+            constituency.votesForBS += county.votesForBS;
+            constituency.votesForMN += county.votesForMN ? county.votesForMN : 0;
+        }
+    })
+
+    return sejmikWithVotes.map(sejmik => {
+        return {
+            id: sejmik.id,
+            name: sejmik.name,
+            numberOfVotes: sejmik.numberOfVotes,
+            votesForKO: sejmik.votesForKO,
+            votesForLEW: sejmik.votesForLEW,
+            votesForTD: sejmik.votesForTD,
+            votesForKONF: sejmik.votesForKONF,
+            votesForPIS: sejmik.votesForPIS,
+            votesForBS: sejmik.votesForBS,
+            votesForMN: sejmik.votesForMN ? sejmik.votesForMN : 0,
+            votesForGovernment: sejmik.votesForKO + sejmik.votesForLEW + sejmik.votesForTD,
+            votesForOpposition: sejmik.numberOfVotes - sejmik.votesForKO - sejmik.votesForLEW - sejmik.votesForTD
+        };
+    });
+};
