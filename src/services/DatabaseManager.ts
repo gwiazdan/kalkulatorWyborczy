@@ -96,17 +96,13 @@ export const getMunicipalities = async (): Promise<PartyResults[]> => {
 };
 
 let importedMunicipalities: Municipality[] = [];
-fetch('/Municipalities.json')
-    .then(res => res.json())
-    .then(data => importedMunicipalities = data);
+importedMunicipalities = await fetch('/kalkulatorWyborczy/Municipalities.json').then(res => res.json());
 
 
 
 const counties = async():Promise<CountyWithVotes[]> => {
     let importedCounties: County[] = [];
-    fetch('/Counties.json')
-        .then(res => res.json())
-        .then(data => importedCounties = data);
+    importedCounties = await fetch('/kalkulatorWyborczy/Counties.json').then(res => res.json());
 
     const countiesWithVotes: CountyWithVotes[] = importedCounties.map(county => ({
         ...county,
@@ -158,9 +154,7 @@ export const getCounties = async (): Promise<PartyResults[]> => {
 
 export const getVoivodeships = async(): Promise<PartyResults[]> => {
     let importedVoivodeships: Voivodeship[] = [];
-    fetch('/Voivodeships.json')
-        .then(res => res.json())
-        .then(data => importedVoivodeships = data);
+    importedVoivodeships = await fetch('/kalkulatorWyborczy/Voivodeships.json').then(res => res.json());
     const importedCounties = await counties();
 
     const voivodeshipsWithVotes: VoivodeshipWithVotes[] = importedVoivodeships.map(voivodeship => ({
@@ -207,16 +201,12 @@ export const getVoivodeships = async(): Promise<PartyResults[]> => {
 };
 
 let importedTerritory: Territory[] = [];
-    fetch('/Territories.json')
-    .then(res => res.json())
-    .then(data => importedTerritory = data);
+    importedTerritory = await fetch('/kalkulatorWyborczy/Territories.json').then(res => res.json());
 
 
 export const getSejmResults = async (): Promise<PartyResults[]> => {
     let importedSejm: Sejm[] = [];
-    fetch('/Sejm.json')
-        .then(res => res.json())
-        .then(data => importedSejm = data);
+    importedSejm = await fetch('/kalkulatorWyborczy/Sejm.json').then(res => res.json());
     const sejmWithVotes: SejmWithVotes[] = importedSejm.map(sejm => ({
         ...sejm,
         numberOfVotes: 0,
@@ -276,9 +266,7 @@ export const getSejmResults = async (): Promise<PartyResults[]> => {
 
 export const getSenateResults = async (): Promise<SenateResults[]> => {
     let importedSenate: Voivodeship[] = [];
-    fetch('/Senate.json')
-        .then(res => res.json())
-        .then(data => importedSenate = data);
+    importedSenate = await fetch('/kalkulatorWyborczy/Senate.json').then(res => res.json());
     const senateWithVotes: VoivodeshipWithVotes[] = importedSenate.map(senate => ({
         ...senate,
         numberOfVotes: 0,
@@ -338,9 +326,7 @@ export const getSenateResults = async (): Promise<SenateResults[]> => {
 
 export const getEuroResults = async (): Promise<PartyResults[]> => {
     let importedEuro: Voivodeship[] = [];
-    fetch('/European_Parliament.json')
-        .then(res => res.json())
-        .then(data => importedEuro = data);
+    importedEuro = await fetch('/kalkulatorWyborczy/European_Parliament.json').then(res => res.json());
     const euroWithVotes: VoivodeshipWithVotes[] = importedEuro.map(euro => ({
         ...euro,
         numberOfVotes: 0,
@@ -400,9 +386,7 @@ export const getEuroResults = async (): Promise<PartyResults[]> => {
 
 export const getSejmikResults = async (): Promise<PartyResults[]> => {
     let importedSejmiki: Sejmik[] = [];
-    fetch('/Sejmiki.json')
-        .then(res => res.json())
-        .then(data => importedSejmiki = data);
+    importedSejmiki = await fetch('/kalkulatorWyborczy/Sejmiki.json').then(res => res.json());
     const sejmikWithVotes: SejmikWithVotes[] = importedSejmiki.map(sejmik => ({
         ...sejmik,
         numberOfVotes: 0,

@@ -42,14 +42,15 @@ async function fetchSenateDataFromAPI(func: Promise<SenateResults[]>, tableName:
 
 // Funkcja do pobierania wszystkich danych
 export async function fetchAllData() {
-    await fetchDataFromAPI(getMunicipalities(), "municipalitiesResults");
-    await fetchDataFromAPI(getCounties(), "countiesResults");
-    await fetchDataFromAPI(getVoivodeships(), "voivodeshipsResults");
-    await fetchSenateDataFromAPI(getSenateResults(), "senateResults");
-    await fetchDataFromAPI(getSejmResults(), "sejmResults");
-    await fetchDataFromAPI(getSejmikResults(), "sejmikResults");
-    await fetchDataFromAPI(getEuroResults(), "euroResults");
-
+    await Promise.all([
+        fetchDataFromAPI(getMunicipalities(), "municipalitiesResults"),
+        fetchDataFromAPI(getCounties(), "countiesResults"),
+        fetchDataFromAPI(getVoivodeships(), "voivodeshipsResults"),
+        fetchSenateDataFromAPI(getSenateResults(), "senateResults"),
+        fetchDataFromAPI(getSejmResults(), "sejmResults"),
+        fetchDataFromAPI(getSejmikResults(), "sejmikResults"),
+        fetchDataFromAPI(getEuroResults(), "euroResults")
+    ]);
 }
 
 export async function getAllMunicipalitiesResults(): Promise<PartyResults[]> {

@@ -3,8 +3,18 @@ import Map from "./components/Map/Map.tsx";
 import {Controls} from "./components/Controls/Controls.tsx";
 import {AppHeader} from "./components/AppHeader.tsx";
 import {DetailsWindow} from "./components/Details/DetailsWindow.tsx";
+import {useEffect} from "react";
+import {fetchAllData} from "./services/db.ts";
 
 function App() {
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await fetchAllData();
+        }
+        fetchData();
+    },[]);
+
 
     return (
         <>
