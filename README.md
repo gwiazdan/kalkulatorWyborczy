@@ -4,4 +4,9 @@ Projekt jest próbą uchwycenia wpływu nielinearnego rozkładu poparcia partii 
 
 ## Opis implementacji
 
-Kalkulator dokonuje proporcjonalnego wzrostu poparcia w gminach w relacji do poparcia w kraju.
+Program jest napisany w pełni w Vite + React + Typescript. Style uzupełniane są przez bibliotekę Tailwind CSS. 
+Kalkulator dokonuje proporcjonalnego wzrostu popracia w okręgach, gminach, powiatach, województwach. 
+
+## Link do strony
+
+https://gwiazdan.github.io/kalkulatorWyborczy
